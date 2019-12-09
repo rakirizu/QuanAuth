@@ -116,7 +116,7 @@ class db
         }
 
         foreach ($data as $k => $v) {
-
+            $value = '';
             if (empty($column)) {
                 $column = $k;
                 if ($v == '{nullvaluereplace}') {
