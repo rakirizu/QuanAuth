@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+
+<div class="layui-row layui-col-space10 my-index-main">
+    <form class="layui-form" action="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">设置级别</label>
+            <div class="layui-input-block">
+                <select id="gradelist_op" name="lid" lay-search required lay-verify="required">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开通折率</label>
+            <div class="layui-input-block">
+                <input type="text" id="grade_present" name="present" required lay-verify="required"
+                       placeholder="开通下级代理支付 = 开通的代理等级价格 × 这里设置的折率，请小于1，0.1为一折" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">允许开通</label>
+            <div class="layui-input-block" id="gradelist_ad">
+
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">保存设置</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+
+    <table class="layui-hide" id="agentlist" lay-filter="agentlist"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grade">级别</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </script>
+
+</div>
+
+
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    var adlist = '';
+
+    layui.use(['form', 'table', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+        var table = layui.table, form = layui.form;
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=gradelist',
+            type: 'POST',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                adlist = data.gradelist_ad;
+                $('#gradelist_ad').html(data.gradelist_ad);
+                $('#gradelist_op').html(data.gradelist_op);
+                form.render();
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+
+
+        form.on('submit', function (data) {
+            var loading = layer.load();
+            var person = new Object();
+            var id = '';
+            $("#gradelist_ad input:checkbox").each(function () {
+                if ($(this).is(':checked')) {
+                    id = $(this).val();
+                    person[id] = true;
+                }
+            });
+            var info = JSON.stringify(person);
+            $.ajax({
+                url: '../ajax.php?mod=setlevel',
+                type: 'POST',
+                dataType: 'html',
+                data: 'lid=' + data.field.lid + '&present=' + data.field.present + '&info=' + info,
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+        form.on('select', function (data) {
+
+
+            $.ajax({
+                url: '../ajax.php?mod=getsetlevel',
+                type: 'POST',
+                dataType: 'json',
+                data: 'lid=' + data.value,
+                success: function (data) {
+                    layer.close(loading);
+                    $('#gradelist_ad').html(adlist);
+                    $('#grade_present').val(data.present);
+                    if (data.info !== '') {
+                        var info = $.parseJSON(data.info);
+                        Object.keys(info).forEach(function (key) {
+                            $("#p" + key).attr("checked", true);
+                        });
+                    }
+                    form.render();
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+
+        });
+
+    });
+
+
+</script>
+</body>
+</html>

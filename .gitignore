@@ -1,0 +1,7 @@
+/function/config.inc.php
+/img/apps/*
+/admin/dialogs/upload/*
+/.idea/
+*.bak
+/SDK/*.bak
+/function/function_core_source.php

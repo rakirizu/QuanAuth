@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+<div class="layui-row layui-col-space10 my-index-main">
+    <div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
+        <div class="my-nav-btn layui-clear" data-href="./html/sqgl.html">
+            <div class="layui-col-md12">
+                <button class="layui-btn layui-btn-big layui-btn-danger layui-icon">&#xe756;</button>
+            </div>
+            <div class="layui-col-md12 tc">
+                <p class="my-nav-text" id="usernum">loading</p>
+                <p class="my-nav-text layui-elip">用户数量</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
+        <div class="my-nav-btn layui-clear" data-href="./html/zxcz.html">
+            <div class="layui-col-md12">
+                <button class="layui-btn layui-btn-big layui-btn-warm layui-icon">&#xe735;</button>
+            </div>
+            <div class="layui-col-md12 tc">
+                <p class="my-nav-text" id="money">loading</p>
+                <p class="my-nav-text layui-elip">账户余额</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
+        <div class="my-nav-btn layui-clear" data-href="./html/zxcz.html">
+            <div class="layui-col-md12">
+                <button class="layui-btn layui-btn-big layui-icon">&#xe715;</button>
+            </div>
+            <div class="layui-col-md12 tc">
+                <p class="my-nav-text" id="allrecharge">loading</p>
+                <p class="my-nav-text layui-elip">累计充值</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
+        <div class="my-nav-btn layui-clear" data-href="./html/ktsq.html">
+            <div class="layui-col-md12">
+                <button class="layui-btn layui-btn-big layui-btn-normal layui-icon">&#xe705;</button>
+            </div>
+            <div class="layui-col-md12 tc">
+                <p class="my-nav-text" id="allspend">loading</p>
+                <p class="my-nav-text layui-elip">累计消费</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
+        <div class="my-nav-btn layui-clear" data-href="./html/ktxj.html">
+            <div class="layui-col-md12">
+                <button class="layui-btn layui-btn-big layui-icon" style="background-color: #5FB878;">&#xe6b2;</button>
+            </div>
+            <div class="layui-col-md12 tc">
+                <p class="my-nav-text" id="subordinate">loading</p>
+                <p class="my-nav-text layui-elip">下级数量</p>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs4 layui-col-sm2 layui-col-md2">
+        <div class="my-nav-btn layui-clear" data-href="./html/jbts.html">
+            <div class="layui-col-md12">
+                <button class="layui-btn layui-btn-big layui-bg-cyan layui-icon">&#xe698;</button>
+            </div>
+            <div class="layui-col-md12 tc">
+                <p class="my-nav-text" id="level">loading</p>
+                <p class="my-nav-text layui-elip">当前等级</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-xs12">
+        <div class="layui-collapse">
+            <div class="layui-colla-item">
+                <h2 class="layui-colla-title">系统公告</h2>
+                <div class="flow-default layui-colla-content layui-show" id="notice">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    layui.use(['flow', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        var flow = layui.flow, vipTab = layui.vip_tab;
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                //vipTab.add('','标题','路径');
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+
+        $.ajax({
+            url: '../ajax.php?mod=getsysinfo',
+            type: 'POST',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                $('#money').html(data.money);
+                $('#allrecharge').html(data.allrecharge);
+                $('#allspend').html(data.allspend);
+                $('#subordinate').html(data.subordinate);
+                $('#usernum').html(data.usernum);
+                $('#level').html(data.level);
+            },
+            error: function (data) {
+                $('#money').html('error');
+                $('#allrecharge').html('error');
+                $('#allspend').html('error');
+                $('#subordinate').html('error');
+                $('#usernum').html('error');
+                $('#level').html('error');
+            }
+        });
+
+        flow.load({
+            elem: '#notice'
+            , scrollElem: '#notice'
+            , done: function (page, next) {
+                var lis = [];
+                $.ajax({
+                    url: '../ajax.php?mod=getnotice',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: '',
+                    success: function (data) {
+                        $('#notice').html(data);
+                        next();
+                    },
+                    error: function (data) {
+                        $('#notice').html('嗷呜o(╥﹏╥)o 获取公告请求失败啦');
+                        next();
+                    }
+                });
+                //假设总页数为 6
+            }
+        });
+
+        flow.load({
+            elem: '#uplog'
+            , scrollElem: '#uplog'
+            , done: function (page, next) {
+                var lis = [];
+                $.ajax({
+                    url: '../ajax.php?mod=getuplog',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: '',
+                    success: function (data) {
+                        $('#uplog').html('<div style="width: 100%;height: 800px;">\n' +
+                            '      <textarea class="layui-textarea" style="width: 100%;height: 800px;">' + data + '</textarea>\n' +
+                            '    </div>');
+                        next();
+                    },
+                    error: function (data) {
+                        $('#uplog').html('嗷呜o(╥﹏╥)o 获取系统更新日志失败啦');
+                        next();
+                    }
+                });
+                //假设总页数为 6
+            }
+        });
+
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+
+<div class="layui-row layui-col-space10 my-index-main">
+
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">应用封面上传</h2>
+            <div class="layui-colla-content layui-show">
+                <div class="layui-row">
+
+                    <div class="layui-col-xs6">
+                        <img src="../img/apps/1529426937.png" id="img" class="img-thumbnail" style="max-height: 1000px;min-height: 300px">
+                    </div>
+                    <div class="layui-col-xs6">
+                        <div class="layui-upload-drag" id="test10">
+                            <i class="layui-icon"></i>
+                            <p>点击上传，或将文件拖拽到此处</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">详情介绍设置</h2>
+            <div class="layui-colla-content layui-show">
+                <div id="editor" style="height: 500px"></div>
+            </div>
+
+            <button type="button" class="layui-btn layui-btn-normal" onclick="saveinroduce()" style="float:right">
+                保存插件详情
+            </button>
+            <br><br>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type = "text/javascript" src = "../../static/frame/layui/layui.js" ></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="../ueditor.all.min.js"></script>
+<!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+<!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+<script type="text/javascript" charset="utf-8" src="../lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript">
+
+
+    layui.use(['element', 'layer', 'upload', 'vip_tab'], function () {
+        // 打开选项卡
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+
+        var upload = layui.upload, layer = layui.layer;
+
+
+        upload.render({
+            elem: '#test10'
+            , url: "../ajax.php?mod=upload&appid=" + getQueryVariable('appid')
+            , done: function (res) {
+                refreshimg();
+            }
+        });
+        var ue = UE.getEditor('editor');
+
+        loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=introduce',
+            type: 'POST',
+            dataType: 'html',
+            data: 'appid=' + getQueryVariable('appid'),
+            success: function (data) {
+                layer.close(loading);
+                //UE.getEditor('editor').setContent(data);
+                ue.ready(function () {
+                    ue.setContent(data);
+                    $("editor").height(500);
+                });
+
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        });
+        refreshimg();
+    });
+
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+    }
+
+    function isFocus(e) {
+        alert(UE.getEditor('editor').isFocus());
+        UE.dom.domUtils.preventDefault(e)
+    }
+
+    function setblur(e) {
+        UE.getEditor('editor').blur();
+        UE.dom.domUtils.preventDefault(e)
+    }
+
+    function insertHtml() {
+        var value = prompt('插入html代码', '');
+        UE.getEditor('editor').execCommand('insertHtml', value)
+    }
+
+    function createEditor() {
+        enableBtn();
+        UE.getEditor('editor');
+    }
+
+    function getAllHtml() {
+        alert(UE.getEditor('editor').getAllHtml())
+    }
+
+    function getContent() {
+        var arr = [];
+        arr.push("使用editor.getContent()方法可以获得编辑器的内容");
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getContent());
+        alert(arr.join("\n"));
+    }
+
+    function getPlainTxt() {
+        var arr = [];
+        arr.push("使用editor.getPlainTxt()方法可以获得编辑器的带格式的纯文本内容");
+        arr.push("内容为：");
+        arr.push(UE.getEditor('editor').getPlainTxt());
+        alert(arr.join('\n'))
+    }
+
+    function setContent(isAppendTo) {
+        var arr = [];
+        arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+        UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
+        alert(arr.join("\n"));
+    }
+
+    function setDisabled() {
+        UE.getEditor('editor').setDisabled('fullscreen');
+        disableBtn("enable");
+    }
+
+    function setEnabled() {
+        UE.getEditor('editor').setEnabled();
+        enableBtn();
+    }
+
+    function getText() {
+        //当你点击按钮时编辑区域已经失去了焦点，如果直接用getText将不会得到内容，所以要在选回来，然后取得内容
+        var range = UE.getEditor('editor').selection.getRange();
+        range.select();
+        var txt = UE.getEditor('editor').selection.getText();
+        alert(txt)
+    }
+
+    function getContentTxt() {
+        var arr = [];
+        arr.push("使用editor.getContentTxt()方法可以获得编辑器的纯文本内容");
+        arr.push("编辑器的纯文本内容为：");
+        arr.push(UE.getEditor('editor').getContentTxt());
+        alert(arr.join("\n"));
+    }
+
+    function hasContent() {
+        var arr = [];
+        arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+        arr.push("判断结果为：");
+        arr.push(UE.getEditor('editor').hasContents());
+        alert(arr.join("\n"));
+    }
+
+    function setFocus() {
+        UE.getEditor('editor').focus();
+    }
+
+    function deleteEditor() {
+        disableBtn();
+        UE.getEditor('editor').destroy();
+    }
+
+    function disableBtn(str) {
+        var div = document.getElementById('btns');
+        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+        for (var i = 0, btn; btn = btns[i++];) {
+            if (btn.id == str) {
+                UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+            } else {
+                btn.setAttribute("disabled", "true");
+            }
+        }
+    }
+
+    function enableBtn() {
+        var div = document.getElementById('btns');
+        var btns = UE.dom.domUtils.getElementsByTagName(div, "button");
+        for (var i = 0, btn; btn = btns[i++];) {
+            UE.dom.domUtils.removeAttributes(btn, ["disabled"]);
+        }
+    }
+
+    function getLocalData() {
+        alert(UE.getEditor('editor').execCommand("getlocaldata"));
+    }
+
+    function clearLocalData() {
+        UE.getEditor('editor').execCommand("clearlocaldata");
+        alert("已清空草稿箱")
+    }
+
+    function saveinroduce() {
+        var loading = layer.load();
+        //alert(appid);
+        $.ajax({
+            url: '../ajax.php?mod=saveintroduce',
+            type: 'POST',
+            dataType: 'html',
+            data: 'appid=' + getQueryVariable('appid') + '&content=' + encodeURIComponent(UE.getEditor('editor').getContent()),
+            success: function (data) {
+                layer.close(loading);
+                layer.alert(data);
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+
+    //上传文件
+
+    function refreshimg() {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=imgsrc',
+            type: 'POST',
+            dataType: 'html',
+            data: 'appid=' + getQueryVariable('appid'),
+            success: function (data) {
+                layer.close(loading);
+                $("#img").attr('src', data + "?t=" + Date.parse(new Date()));
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

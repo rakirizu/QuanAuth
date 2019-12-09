@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加应用</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<div class="layui-row layui-col-space10 my-index-main">
+    <form class="layui-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择级别</label>
+            <div class="layui-input-block">
+                <select name="level" lay-verify="required" id="levallist">
+                    <option value=""></option>
+                </select>
+                <div class="layui-form-mid layui-word-aux" id="tips">辅助文字</div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    layui.use(['form', 'element', 'layer', 'vip_tab'], function () {
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                //vipTab.add('','标题','路径');
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+
+        var form = layui.form;
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=getlevallist',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                if (data === '' || data === null) {
+                    layer.open({
+                        type: 1
+                        ,
+                        title: false
+                        ,
+                        closeBtn: false
+                        ,
+                        area: '300px;'
+                        ,
+                        shade: 0.8
+                        ,
+                        id: 'sitenotice'
+                        ,
+                        resize: false
+                        ,
+                        btn: ['确定']
+                        ,
+                        btnAlign: 'c'
+                        ,
+                        moveType: 1
+                        ,
+                        content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">站长没有添加任何级别</div>'
+                        ,
+                        success: function (layero) {
+                        }
+                    });
+                } else {
+                    $('#levallist').html(data);
+                    form.render();
+                }
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+
+        form.on('select', function (data) {
+            var ii = layer.load(0);
+
+            $.ajax({
+                type: "POST",
+                url: "../ajax.php?mod=leveltips",
+                data: 'leval=' + data.value,
+                dataType: 'html',
+                success: function (data) {
+                    layer.close(ii);
+                    $("#tips").html(data);
+                },
+                error: function (data) {
+                    layer.close(ii);
+                    layer.msg('请求数据失败，建议刷新重试，多次重试不行请与客服联系！');
+
+                }
+            });
+        });
+
+        form.on('submit(formDemo)', function (data) {
+            var ii = layer.load(0);
+            $.ajax({
+                type: "POST",
+                url: "../ajax.php?mod=updatelevel",
+                data: 'leval=' + data.field.level,
+                dataType: 'html',
+                success: function (data) {
+                    layer.close(ii);
+                    layer.alert(data);
+                },
+                error: function (data) {
+                    layer.close(ii);
+                    layer.msg('请求数据失败，建议刷新重试，多次重试不行请与客服联系！');
+
+                }
+            });
+            return false;
+        });
+
+
+    });
+</script>
+</body>
+</html>

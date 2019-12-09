@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>代理后台中心</title>
+    <link rel="stylesheet" href="../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/frame/static/css/style.css">
+    <link rel="icon" href="../static/frame/static/image/code.png">
+</head>
+<body>
+
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header my-header">
+        <a href="agent.html">
+            <div class="my-header-logo">代理中心</div>
+        </a>
+        <div class="my-header-btn">
+            <button class="layui-btn layui-btn-small btn-nav layui-btn-normal"><i class="layui-icon">&#xe65f;</i>
+            </button>
+        </div>
+        <ul class="layui-nav my-header-user-nav" lay-filter="side-top-right">
+            <!-- <li class="layui-nav-item"><a href="javascript:;" class="pay" href-url="">支持作者</a></li> -->
+            <li class="layui-nav-item">
+                <a class="name" href="javascript:;"><i class="layui-icon">&#xe629;</i>主题</a>
+                <dl class="layui-nav-child">
+                    <dd data-skin="0"><a href="javascript:;">默认</a></dd>
+                    <dd data-skin="1"><a href="javascript:;">纯白</a></dd>
+                    <dd data-skin="2"><a href="javascript:;">蓝白</a></dd>
+
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a class="name" href="javascript:;" id="agent_info"></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" href-url="html/userset.html"><i class="layui-icon">&#xe621;</i>账号设置</a>
+                    </dd>
+                    <dd><a href="index.php?mod=loginout"><i class="layui-icon">&#x1006;</i>安全退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+
+    </div>
+    <!-- side -->
+    <div class="layui-side my-side">
+        <div class="layui-side-scroll">
+            <!-- 左侧主菜单添加选项卡监听 -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="side-main">
+                <li class="layui-nav-item  layui-nav-itemed">
+                    <a href="javascript:;"><i class="layui-icon">&#xe620;</i>授权系统</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="html/ktsq.html"><i class="layui-icon">&#xe621;</i>开通授权</a>
+                        </dd>
+                        <dd><a href="javascript:;" href-url="html/sqgl.html"><i class="layui-icon">&#xe621;</i>授权管理</a>
+                        </dd>
+                        <dd><a href="javascript:;" href-url="html/ddjl.html"><i class="layui-icon">&#xe621;</i>订单记录</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;"><i class="layui-icon">&#xe609;</i>卡密系统</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="html/czkm.html"><i class="layui-icon">&#xe653;</i>余额卡密</a>
+                        </dd>
+                        <dd><a href="javascript:;" href-url="html/tckm.html"><i class="layui-icon">&#xe653;</i>套餐卡密</a>
+                        </dd>
+
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>自助服务</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="html/zxcz.html"><i class="layui-icon">&#xe621;</i>在线充值</a>
+                        </dd>
+                        <dd><a href="javascript:;" href-url="html/jbts.html"><i class="layui-icon">&#xe621;</i>级别提升</a>
+                        </dd>
+
+                    </dl>
+                </li>
+
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;"><i class="layui-icon">&#xe628;</i>下级代理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" href-url="html/ktxj.html"><i class="layui-icon">&#xe621;</i>开通下级</a>
+                        </dd>
+                        <dd><a href="javascript:;" href-url="html/xjgl.html"><i class="layui-icon">&#xe621;</i>下级管理</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+    <!-- body -->
+    <div class="layui-body my-body">
+        <div class="layui-tab layui-tab-card my-tab" lay-filter="card" lay-allowClose="true">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id="1"><span><i class="layui-icon">&#xe638;</i>欢迎页</span></li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe id="iframe" src="./html/welcome.html" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="layui-footer footer footer-demo" style="text-align: center">
+        <div class="layui-main">
+            <p id="copyright">© 2018 ALL right received.</p>
+        </div>
+    </div>
+</div>
+<!-- 右键菜单 -->
+<div class="my-dblclick-box none">
+    <table class="layui-tab dblclick-tab">
+        <tr class="card-refresh">
+            <td><i class="layui-icon">&#x1002;</i>刷新当前标签</td>
+        </tr>
+        <tr class="card-close">
+            <td><i class="layui-icon">&#x1006;</i>关闭当前标签</td>
+        </tr>
+        <tr class="card-close-all">
+            <td><i class="layui-icon">&#x1006;</i>关闭所有标签</td>
+        </tr>
+    </table>
+</div>
+<script src="../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../static/frame/static/js/vip_comm.js"></script>
+<script type="text/javascript">
+    layui.use(['layer', 'vip_nav'], function () {
+        var layer = layui.layer;
+        setInterval(function () {
+            checklogin();
+        }, 35000);
+        var loading = layer.load();
+        checklogin();
+
+        layer.close(loading);
+
+    });
+
+    function checklogin() {
+        $.ajax({
+            url: 'ajax.php?mod=checklogin',
+            type: 'POST',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                if (data.code !== 1) {
+                    layer.msg('尚未登录或者登录失效，请重新登录');
+                    window.location.href = 'login.html';
+                }
+                $('#agent_info').html('<img src="https://q.qlogo.cn/headimg_dl?bs=qq&dst_uin=' + data.qq + '&spec=100" alt="' + data.qq + '" style="width: 30px;height: 30px;border-radius: 50%;-moz-border-radius: 50%;-webkit-border-radius: 50%;"> ' + data.username + ' ');
+
+            },
+            error: function (data) {
+                layer.msg('[' + data.status + ']' + data.statusText);
+            }
+        });
+    }
+</script>
+</body>
+</html>

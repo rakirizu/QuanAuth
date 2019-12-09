@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<div class="layui-row layui-col-space10 my-index-main">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理账号</label>
+            <div class="layui-input-block">
+                <input type="text" name="agent_name" required lay-verify="required" placeholder="开通的账号"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="agent_pass" required lay-verify="required" placeholder="开通的密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">选择级别</label>
+            <div class="layui-input-block">
+                <select id="agent_leval" name="agent_leval" lay-search required lay-verify="required">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号余额</label>
+            <div class="layui-input-block">
+                <input type="text" name="agent_money" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">代理QQ</label>
+            <div class="layui-input-block">
+                <input type="text" name="agent_qq" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">添加代理</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+
+
+    <table class="layui-hide" id="agentlist" lay-filter="agentlist"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="log">记录</a>
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="grade">级别</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </script>
+
+</div>
+
+
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+
+
+    layui.use(['form', 'table', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+        var table = layui.table, form = layui.form;
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=getlevallist',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                $('#agent_leval').html(data);
+                form.render('select');
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+
+        table.render({
+            elem: '#agentlist'
+            , url: '../ajax.php?mod=getagentlist'
+            , cellMinWidth: 130
+            , cols: [[
+                {field: 'ID', title: 'ID', width: 60}
+                , {field: 'username', title: '账号', edit: 'text'}
+                , {field: 'password', title: '密码', edit: 'text'}
+                , {field: 'begintime', title: '开通时间'}
+                , {field: 'logintime', title: '上次登录'}
+                , {field: 'loginip', title: '登录IP'}
+                , {field: 'levelname', title: '代理级别'}
+                , {field: 'money', title: '余额', edit: 'text'}
+                , {field: 'allspend', title: '累计消费'}
+                , {field: 'allrecharge', title: '累计充值'}
+                , {field: 'qq', title: 'QQ', edit: 'text'}
+                , {field: 'status', title: '状态'}
+                , {toolbar: '#barDemo', title: '操作', width: 240}
+            ]]
+            , page: true
+        });
+
+        table.on('tool', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除这个代理么？', function (index) {
+                    $.ajax({
+                        url: '../ajax.php?mod=delagent',
+                        type: 'POST',
+                        dataType: 'html',
+                        data: 'aid=' + data.ID,
+                        success: function (data) {
+                            //layer.close(loading);
+                            obj.del();
+                            layer.msg(data);
+                        },
+                        error: function (data) {
+                            //layer.close(loading);
+                            layer.msg('请求失败' + data);
+                        }
+                    });
+                    layer.close(index);
+                });
+            } else if (obj.event === 'grade') {
+
+                $.ajax({
+                    url: '../ajax.php?mod=getlevallist',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: 'aid=' + data.ID,
+                    success: function (data) {
+
+                        layer.confirm('<form class="layui-form">        <div class="layui-form-item">\n' +
+                            '            <label class="layui-form-label">选择级别</label>\n' +
+                            '            <div class="layui-input-block">\n' +
+                            '                <select id="changelevellist" lay-search required  lay-verify="required">\n' + data +
+                            '                </select>\n' +
+                            '            </div>\n' +
+                            '        </div></form><script>layui.use(\'form\', function(){\n' +
+                            '  var form = layui.form;\n' +
+                            '  \n' +
+                            '  form.render(\'select\');\n' +
+                            '});<\/script>', {
+                            btn: ['保存', '取消'], area: ['600px', '400px'] //按钮
+                        }, function () {
+                            if ($('#changelevellist').val() === '' || $('#changelevellist').val() === null) {
+                                layer.msg('您尚未选择代理级别，更改失败！');
+                            } else {
+                                $.ajax({
+                                    url: '../ajax.php?mod=changeagent',
+                                    type: 'POST',
+                                    dataType: 'html',
+                                    data: 'aid=' + obj.data.ID + '&mod=levelid&value=' + $('#changelevellist').val(),
+                                    success: function (data) {
+                                        //obj.del();
+                                        //layer.close(loading);
+                                        layer.msg(data);
+                                    },
+                                    error: function (data) {
+                                        //layer.close(loading);
+                                        layer.msg('请求失败' + data);
+                                    }
+                                })
+                            }
+
+                            //layer.msg('的确很重要', {icon: 1});
+                        });
+                    },
+                    error: function (data) {
+                        //layer.close(loading);
+                        layer.msg('请求失败' + data);
+                    }
+                });
+
+
+            } else if (obj.event === 'log') {
+                $.ajax({
+                    url: '../ajax.php?mod=agentlog',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: 'aid=' + data.ID,
+                    success: function (data) {
+                        //layer.close(loading);
+                        layer.open({
+                            type: 1
+                            ,
+                            title: false //不显示标题栏
+                            ,
+                            closeBtn: false
+                            ,
+                            area: '500px;'
+                            ,
+                            shade: 0.8
+                            ,
+                            id: 'keylog' //设定一个id，防止重复弹出
+                            ,
+                            resize: false
+                            ,
+                            btn: ['确定']
+                            ,
+                            btnAlign: 'c'
+                            ,
+                            moveType: 1 //拖拽模式，0或者1
+                            ,
+                            content: '<div style="padding: 30px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + data + '</div>'
+                        });
+                    },
+                    error: function (data) {
+                        //layer.close(loading);
+                        layer.msg('请求失败' + data);
+                    }
+                })
+            }
+        });
+
+        table.on('edit(agentlist)', function (obj) {
+            var value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+            //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            $.ajax({
+                url: '../ajax.php?mod=changeagent',
+                type: 'POST',
+                dataType: 'html',
+                data: 'aid=' + obj.data.ID + '&mod=' + obj.field + '&value=' + obj.value,
+                success: function (data) {
+                    //obj.del();
+                    //layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    //layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+        });
+
+
+        form.on('switch', function (obj) {
+            $.ajax({
+                url: '../ajax.php?mod=changeagent',
+                type: 'POST',
+                dataType: 'html',
+                data: 'aid=' + this.value + '&mod=' + this.name + '&value=' + obj.elem.checked,
+                success: function (data) {
+                    //layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    //layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+        });
+        form.on('submit', function (data) {
+            var loading = layer.load();
+            $.ajax({
+                url: '../ajax.php?mod=addagent',
+                type: 'POST',
+                dataType: 'html',
+                data: 'agent_name=' + data.field.agent_name + '&agent_pass=' + data.field.agent_pass + '&agent_money=' + data.field.agent_money + '&agent_leval=' + data.field.agent_leval + '&agent_qq=' + data.field.agent_qq,
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                    table.reload('agentlist', {url: '../ajax.php?mod=getagentlist'});
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+
+    });
+
+
+</script>
+</body>
+</html>

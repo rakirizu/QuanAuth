@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<div class="layui-row layui-col-space10 my-index-main">
+    <div class="layui-form" action="" style="">
+        <div class="layui-form-item">
+            <label class="layui-form-label" for="demoReload">选择应用</label>
+            <div class="layui-input-block">
+                <select id="demoReload" lay-search required lay-verify="required">
+
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <table class="layui-hide" id="buylist" lay-filter="buylist" lay-data="{id: 'buylist'}"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="buy_first">开通</a>
+    </script>
+
+</div>
+
+
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+
+
+    layui.use(['form', 'table', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+        var table = layui.table, form = layui.form;
+
+        table.render({
+            elem: '#buylist'
+            , url: '../ajax.php?mod=buy_fidlist'
+            , cellMinWidth: 130
+            , cols: [[
+                {field: 'id', title: 'ID', width: 60}
+                , {field: 'fidname', title: '套餐名称'}
+                , {field: 'appname', title: '授权应用'}
+                , {field: 'sqnum', title: '授权数量'}
+                , {field: 'agentprice', title: '价格(元)'}
+                , {toolbar: '#barDemo', title: '购买', width: 240}
+            ]]
+            , page: true
+        });
+
+
+        var load = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=buy_applist',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(load);
+                $('#demoReload').html(data);
+                form.render('select');
+            },
+            error: function (data) {
+                layer.close(load);
+                layer.msg('请求失败' + data);
+            }
+        });
+
+
+        form.on('select', function (data) {
+            table.reload('buylist', {
+                url: '../ajax.php?mod=buy_fidlist'
+                , where: {'appid': data.value} //设定异步数据接口的额外参数
+                //,height: 300
+            });
+
+        });
+
+        table.on('tool', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'buy_first') {
+                layer.open({
+                    type: 2,
+                    title: '开通授权 - ' + obj.data.fidname,
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['90%', '90%'],
+                    content: '../ajax.php?mod=buy_first&fid=' + obj.data.id //iframe的url
+                });
+            }
+        });
+
+
+        form.on('submit', function (data) {
+            table.reload('buylist', {
+                url: '../ajax.php?mod=buy_fidlist'
+                , where: {'appid': $('#demoReload').val(), 'search': $('#content').val()} //设定异步数据接口的额外参数
+            });
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+
+</script>
+</body>
+</html>

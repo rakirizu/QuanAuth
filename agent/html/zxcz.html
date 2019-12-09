@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加应用</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<div class="layui-row layui-col-space10 my-index-main">
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">充值金额</label>
+            <div class="layui-input-block">
+                <input type="text" name="money" required lay-verify="required" placeholder="单位为元" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付方式</label>
+            <div class="layui-input-block">
+                <input type="radio" name="zffs" value="zxzf" lay-filter="olinepay" title="在线支付" checked>
+                <input type="radio" name="zffs" value="czkm" lay-filter="cardpay" title="余额卡密">
+
+
+                <!--                <div class="radio3 radio-check radio-success radio-inline" onclick="$('#show_kmcz').hide();$('#show_zxzf').show();">
+                                    <input id="radio4" name="zffs" value="zxzf" checked="" type="radio">
+                                    <label for="radio4">
+                                        在线支付
+                                    </label>
+                                </div>
+
+                                <div class="radio3 radio-check radio-success radio-inline">
+                                    <input id="radio5" name="zffs" value="czkm" onclick="$('#show_kmcz').show();$('#show_zxzf').hide();" type="radio">
+                                    <label for="radio5">
+                                        充值卡密
+                                    </label>
+                                </div>-->
+            </div>
+        </div>
+        <div class="layui-form-item" id="show_kmcz" hidden="">
+            <label for="kami" class="layui-form-label">请输入卡密</label>
+            <div class="layui-input-block">
+                <input class="layui-input" id="kami" name="kami" placeholder="" type="text">
+            </div>
+        </div>
+
+        <div class="layui-form-item" id="show_zxzf">
+            <label class="layui-form-label">支付方式</label>
+            <div class="layui-input-block">
+                <input type="radio" name="zxzffs" value="zfb" title="支付宝" checked>
+                <input type="radio" name="zxzffs" value="wx" title="微信支付">
+                <input type="radio" name="zxzffs" value="qq" title="QQ钱包">
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即充值</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    layui.use(['form', 'element', 'layer', 'vip_tab'], function () {
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                //vipTab.add('','标题','路径');
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+
+        var form = layui.form;
+
+        form.on('submit(formDemo)', function (data) {
+            var ii = layer.load();
+            $.ajax({
+                type: "POST",
+                url: "../ajax.php?mod=recharge",
+                data: 'money=' + data.field.money + '&zffs=' + data.field.zffs + '&zxzffs=' + data.field.zxzffs + '&kt_key=' + data.field.kami,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code === null || data.code === '') {
+                        layer.close(ii);
+                        layer.msg('服务器发生错误，建议刷新重试，多次重试不行请与客服联系！');
+                        return;
+                    }
+                    if (data.code === '1') {
+                        layer.close(ii);
+                        layer.confirm(data.info, {
+                            icon: 1
+                            , time: 0 //不自动关闭
+                            , btn: ['立即付款', '取消支付']
+                            , yes: function (index) {
+                                layer.close(index);
+                                window.open("../../payment.php?tradeno=" + data.tradeno);
+                            }
+                        });
+                        //alert(window.tradeno);
+                    } else {
+                        layer.close(ii);
+                        layer.msg(data.msg);
+                    }
+
+                },
+                error: function (data) {
+                    layer.close(ii);
+                    layer.msg('请求数据失败，建议刷新重试，多次重试不行请与客服联系！');
+
+                }
+            });
+            return false;
+        });
+
+
+        form.on('radio(cardpay)', function (data) {
+            $('#show_kmcz').show();
+            $('#show_zxzf').hide();
+        });
+        form.on('radio(olinepay)', function (data) {
+            $('#show_kmcz').hide();
+            $('#show_zxzf').show();
+        });
+    });
+</script>
+</body>
+</html>

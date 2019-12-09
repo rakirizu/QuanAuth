@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+
+<div class="layui-row layui-col-space10 my-index-main">
+
+
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">站点信息设置</h2>
+            <div class="layui-colla-content layui-show">
+                <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">站点名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="sitename" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">站长QQ</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="adminqq" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">站长邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="adminmail" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备案号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="beian" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">网站URL</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="weburl" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="savesiteinfo">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+
+                    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">添加系统管理员</h2>
+            <div class="layui-colla-content layui-show">
+                <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="addusername" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">密码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="adduserpass" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">QQ</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="adduserqq" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="addadmin">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">发信设置</h2>
+            <div class="layui-colla-content layui-show">
+                <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SMTP地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="smtp_address" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SMTP端口</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="smtp_port" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SMTP账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="smtp_user" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">SMTP密码</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="smtp_pass" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <blockquote class="layui-elem-quote">请先保存后再发送测试邮件</blockquote>
+                            <button class="layui-btn" lay-submit lay-filter="savemailset">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+
+                        </div>
+                    </div>
+
+                    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+                </form>
+                <button class="layui-btn layui-btn-normal" onclick="sendtestmail()" style="width: 100%">发送测试邮件</button>
+            </div>
+        </div>
+    </div>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">内容设置</h2>
+            <div class="layui-colla-content layui-show">
+
+                <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                    <blockquote class="layui-elem-quote">代理公告支持HTML，同时支持 <a style="color: #00a0e9"
+                                                                            href="http://www.layui.com/doc/"
+                                                                            target="_blank">Layui</a>
+                        相关组件，如果是跨域请求请注意请求头设置允许跨域<br>首页导航示例：&lt;a class=&quot;mdl-navigation__link&quot; href=&quot;链接地址1&quot;&gt;链接名称1&lt;/a&gt;
+                        &lt;a class=&quot;mdl-navigation__link&quot; href=&quot;http://fkw.wenquan6.cn&quot;&gt;温泉发卡网&lt;/a&gt;
+                    </blockquote>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">代理公告</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="agentnotice" autocomplete="off" class="layui-textarea"
+                                      placeholder="支持HTML"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" hidden>
+                        <label class="layui-form-label">首页抽屉导航</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="maindrawer" autocomplete="off" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">首页顶部导航</label>
+                        <div class="layui-input-block">
+                            <textarea type="text" name="mainnav" autocomplete="off" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="savenotice">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">验证码设置</h2>
+            <div class="layui-colla-content layui-show">
+                <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                    <blockquote class="layui-elem-quote">验证码使用的是<a href="https://www.vaptcha.com/">vaptcha</a>，您需要自行注册、创建验证单元后获取VID和Key，请确保VID和KEY正确后再开启验证码，否则将无法登录后台</blockquote>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">开启验证码</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="vaptcha_open" lay-skin="switch" lay-text="开启|关闭">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">VID</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="vaptcha_id" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">KEY</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="vaptcha_key" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="vaptcha">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <div class="layui-collapse">
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">Api Token设置</h2>
+            <div class="layui-colla-content layui-show">
+                <div class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+                    <blockquote class="layui-elem-quote">请注意，此Token用于Api访问进行签名，有关签名相关问题请查看文档，重置token会导致以前的token立即失效，请谨慎操作！</blockquote>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">Token</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="token" autocomplete="off" class="layui-input" readonly>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-warm" style="width: 100%" onclick="retoken();">重新生成Token</button>
+                        </div>
+                    </div>
+                    <!-- 更多表单结构排版请移步文档左侧【页面元素-表单】一项阅览 -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    var adlist = '';
+
+    layui.use(['form', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+
+        var form = layui.form;
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=getsysset',
+            type: 'POST',
+            dataType: 'json',
+            data: '',
+            success: function (data) {
+                $("input[name='sitename']").val(data.sitename);
+                $("input[name='adminqq']").val(data.adminqq);
+                $("input[name='adminmail']").val(data.adminmail);
+                $("input[name='beian']").val(data.beian);
+                $("input[name='weburl']").val(data.weburl);
+                $("input[name='smtp_address']").val(data.smtp_address);
+                $("input[name='smtp_port']").val(data.smtp_port);
+                $("input[name='smtp_user']").val(data.smtp_user);
+                $("input[name='smtp_pass']").val(data.smtp_pass);
+                $("input[name='vaptcha_id']").val(data.codevid);
+                $("input[name='vaptcha_key']").val(data.codekey);
+                $("input:checkbox[name=vaptcha_open]").attr("checked", (data.opencode === 'true'));
+                $("textarea[name='agentnotice']").val(data.agentnotice);
+                $("textarea[name='mainnav']").val(data.mainnav);
+                $("textarea[name='maindrawer']").val(data.maindrawer);
+                $('#token').val(data.token);
+                layer.close(loading);
+                form.render();
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        });
+
+        form.on('submit(savesiteinfo)', function (data) {
+            var loading = layer.load();
+
+            $.ajax({
+                url: '../ajax.php?mod=savesiteinfo',
+                type: 'POST',
+                dataType: 'html',
+                data: 'sitename=' + encodeURI(data.field.sitename) + '&adminqq=' + data.field.adminqq + '&adminmail=' + data.field.adminmail + '&beian=' + data.field.beian + '&weburl=' + encodeURI(data.field.weburl),
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            });
+
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.on('submit(savenotice)', function (data) {
+            var loading = layer.load();
+
+            $.ajax({
+                url: '../ajax.php?mod=savenotice',
+                type: 'POST',
+                dataType: 'html',
+                data: 'agentnotice=' + encodeURIComponent(data.field.agentnotice) + '&mainnav=' + encodeURIComponent(data.field.mainnav) + '&maindrawer='  + encodeURIComponent(data.field.maindrawer) ,
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            });
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.on('submit(addadmin)', function (data) {
+            var loading = layer.load();
+
+            $.ajax({
+                url: '../ajax.php?mod=addadmin',
+                type: 'POST',
+                dataType: 'html',
+                data: 'addusername=' + encodeURI(data.field.addusername) + '&adduserpass=' + encodeURI(data.field.adduserpass) + '&adduserqq=' + data.field.adduserqq,
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            });
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.on('submit(savemailset)', function (data) {
+            var loading = layer.load();
+
+            $.ajax({
+                url: '../ajax.php?mod=savemailset',
+                type: 'POST',
+                dataType: 'html',
+                data: 'smtp_address=' + encodeURI(data.field.smtp_address) + '&smtp_port=' + encodeURI(data.field.smtp_port) + '&smtp_user=' + encodeURI(data.field.smtp_user) + '&smtp_pass=' + encodeURI(data.field.smtp_pass),
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            });
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+        form.on('submit(vaptcha)', function (data) {
+            var loading = layer.load();
+
+            $.ajax({
+                url: '../ajax.php?mod=vaptcha',
+                type: 'POST',
+                dataType: 'html',
+                data: 'vaptcha_open=' +(data.field.vaptcha_open==='on') + '&vaptcha_id=' + data.field.vaptcha_id + '&vaptcha_key=' + data.field.vaptcha_key,
+                success: function (data) {
+                    layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            });
+
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+    function sendtestmail() {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=sendtestmail',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                layer.alert(data);
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+    function retoken() {
+
+        layer.confirm('确定重置Token？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            layer.closeAll();
+            var loading = layer.load();
+            $.ajax({
+                url: '../ajax.php?mod=retoken',
+                type: 'POST',
+                dataType: 'html',
+                data: '',
+                success: function (data) {
+
+                    $.ajax({
+                        url: '../ajax.php?mod=getsysset',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: '',
+                        success: function (data) {
+                            $("input[name='sitename']").val(data.sitename);
+                            $("input[name='adminqq']").val(data.adminqq);
+                            $("input[name='adminmail']").val(data.adminmail);
+                            $("input[name='beian']").val(data.beian);
+                            $("input[name='weburl']").val(data.weburl);
+                            $("input[name='smtp_address']").val(data.smtp_address);
+                            $("input[name='smtp_port']").val(data.smtp_port);
+                            $("input[name='smtp_user']").val(data.smtp_user);
+                            $("input[name='smtp_pass']").val(data.smtp_pass);
+                            $("input[name='vaptcha_id']").val(data.codevid);
+                            $("input[name='vaptcha_key']").val(data.codekey);
+                            $("input:checkbox[name=vaptcha_open]").attr("checked", (data.opencode === 'true'));
+                            $("textarea[name='agentnotice']").val(data.agentnotice);
+                            $("textarea[name='mainnav']").val(data.mainnav);
+                            $("textarea[name='maindrawer']").val(data.maindrawer);
+                            $('#token').val(data.token);
+                            layer.close(loading);
+                            form.render();
+                        },
+                        error: function (data) {
+                            location.reload();
+                            layer.close(loading);
+                            layer.msg('请求失败' + data);
+                        }
+                    });
+                },
+                error: function (data) {
+                    layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+        });
+
+    }
+
+</script>
+</body>
+</html>

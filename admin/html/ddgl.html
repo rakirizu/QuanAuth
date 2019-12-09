@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<div class="layui-row layui-col-space10 my-index-main">
+
+
+    <form class="layui-form" action="" style="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">搜索</label>
+            <div class="layui-input-block">
+                <input id="content" autocomplete="off" placeholder="请输入内容" class="layui-input" type="text">
+                <br>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="search">搜索</button>
+                <hr class="layui-bg-blue">
+            </div>
+
+        </div>
+
+    </form>
+    <div class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">批量操作</label>
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="clearbeenpay()">清空已完成订单</button>
+                <button class="layui-btn" onclick="clearnopay();">清空未支付订单</button>
+                <button class="layui-btn" onclick="clearallid();">清空全部订单</button>
+            </div>
+        </div>
+
+    </div>
+    <table class="layui-hide" id="tradelist" lay-filter="tradelist"></table>
+
+
+</div>
+
+
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    layui.use(['form', 'table', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        $('.my-nav-btn').on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+        window.table = layui.table;
+        var form = layui.form;
+
+        table.render({
+            elem: '#tradelist'
+            , url: '../ajax.php?mod=gettradelist'
+            , cellMinWidth: 130
+
+            , cols: [[
+                {field: 'ID', title: 'ID', width: 60}
+                , {field: 'name', title: '订单名称'}
+                , {field: 'tradeno', title: '订单号'}
+                , {field: 'begintime', title: '下单时间'}
+                , {field: 'overtime', title: '完成时间'}
+                , {field: 'mail', title: '用户邮箱'}
+                , {field: 'paytype', title: '支付方式'}
+                , {field: 'status', title: '状态'}
+                , {field: 'paymoney', title: '金额'}
+                , {field: 'user', title: '对象'}
+                , {field: 'tools', title: '操作', width: 240}
+            ]]
+            , page: true
+        });
+
+
+        form.on('submit(search)', function (data) {
+            //alert('111');
+            table.reload('tradelist', {url: '../ajax.php?mod=gettradelist', where: {'search': $('#content').val()}});
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
+    });
+
+    function clearallid() {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=clearalltradeid',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                layer.msg(data);
+                table.reload('tradelist', {
+                    url: '../ajax.php?mod=gettradelist',
+                    where: {'search': $('#content').val()}
+                });
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+    function clearnopay() {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=clearnopay',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                layer.msg(data);
+                table.reload('tradelist', {
+                    url: '../ajax.php?mod=gettradelist',
+                    where: {'search': $('#content').val()}
+                });
+
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+    function clearbeenpay() {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=clearbeenpay',
+            type: 'POST',
+            dataType: 'html',
+            data: '',
+            success: function (data) {
+                layer.close(loading);
+                layer.msg(data);
+                table.reload('tradelist', {
+                    url: '../ajax.php?mod=gettradelist',
+                    where: {'search': $('#content').val()}
+                });
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+    function suppletrade(id) {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=suppletrade',
+            type: 'POST',
+            dataType: 'html',
+            data: 'id=' + id,
+            success: function (data) {
+                layer.close(loading);
+                layer.msg(data);
+                table.reload('tradelist', {
+                    url: '../ajax.php?mod=gettradelist',
+                    where: {'search': $('#content').val()}
+                });
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+    function deltrade(id) {
+        var loading = layer.load();
+        $.ajax({
+            url: '../ajax.php?mod=deltrade',
+            type: 'POST',
+            dataType: 'html',
+            data: 'id=' + id,
+            success: function (data) {
+                layer.close(loading);
+                layer.msg(data);
+                table.reload('tradelist', {
+                    url: '../ajax.php?mod=gettradelist',
+                    where: {'search': $('#content').val()}
+                });
+
+            },
+            error: function (data) {
+                layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+</script>
+</body>
+</html>

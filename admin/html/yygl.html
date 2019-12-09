@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>欢迎页</title>
+    <link rel="stylesheet" href="../../static/frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/frame/static/css/style.css">
+    <link rel="icon" href="../../static/frame/static/image/code.png">
+</head>
+<body class="body">
+
+<div class="layui-row layui-col-space10 my-index-main">
+
+    <table class="layui-hide" id="applist" lay-filter="applist"></table>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="key">秘钥</a>
+        <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+    </script>
+
+</div>
+<script src="../../static/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="../../static/frame/layui/layui.js"></script>
+<script type="text/javascript" src="../../static/js/index.js"></script>
+<script type="text/javascript" src="../../static/frame/echarts/echarts.min.js"></script>
+<script type="text/javascript">
+    layui.use(['form', 'table', 'element', 'layer', 'vip_tab'], function () {
+        // 打开选项卡
+        $(document).on('click', function () {
+            if ($(this).attr('data-href')) {
+                vipTab.add($(this), '<i class="layui-icon">' + $(this).find("button").html() + '</i>' + $(this).find('p:last-child').html(), $(this).attr('data-href'));
+            }
+        });
+        var table = layui.table, form = layui.form, vipTab = layui.vip_tab;
+        $(document).on('click', '.add-tab', function () {
+            alert(JSON.stringify($(this)));
+            vipTab.add($(this));
+        });
+
+
+        table.render({
+            elem: '#applist'
+            , url: '../ajax.php?mod=getapplist'
+            , cellMinWidth: 130
+
+            , cols: [[
+                {field: 'id', title: 'ID', width: 60}
+                , {field: 'app_name', title: '应用名称', edit: 'text'}
+                , {field: 'num_user', title: '用户数'}
+                , {field: 'num_online', title: '在线数'}
+                , {field: 'bdip', title: '绑定IP'}
+                , {field: 'bdjq', title: '绑定机器'}
+                , {field: 'bdqq', title: '绑定QQ'}
+                , {field: 'zxjc', title: '在线检测'}
+                , {field: 'yxhb', title: '允许换绑'}
+                , {field: 'yxjb', title: '允许解绑'}
+                , {field: 'zqkc', title: '周期扣除', edit: 'text'}
+                , {field: 'jbkc', title: '解绑扣除', edit: 'text'}
+                , {field: 'czmz', title: '充值面值', edit: 'text'}
+                , {field: 'zxms', title: '在线秒数', edit: 'text'}
+                , {field: 'yygg', title: '应用公告', edit: 'text'}
+                , {field: 'yybb', title: '应用版本', edit: 'text'}
+                , {field: 'gxrz', title: '更新日志', edit: 'text'}
+                , {field: 'qzgx', title: '强制更新'}
+                , {field: 'mfms', title: '免费模式'}
+                , {field: 'gbyy', title: '关闭应用'}
+                , {field: 'gxdz', title: '更新地址', edit: 'text'}
+                , {field: 'zdysj', title: '自定义数据', edit: 'text'}
+                , {toolbar: '#barDemo', title: '操作', width: 240}
+            ]]
+            , page: true
+        });
+
+        //监听性别操作
+        form.on('switch', function (obj) {
+            openandoff(this.value, this.name, obj.elem.checked);
+
+        });
+        //监听锁定操作
+        form.on('checkbox', function (obj) {
+            openandoff(this.value, this.name, obj.elem.checked);
+        });
+
+        table.on('tool', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+
+                layer.confirm('确定删除这个应用：'+data.app_name+'('+data.id+')？', function (index) {
+                    $.ajax({
+                        url: '../ajax.php?mod=delapp',
+                        type: 'POST',
+                        dataType: 'html',
+                        data: 'appid=' + obj.data.id,
+                        success: function (data) {
+                            //layer.close(loading);
+                            obj.del();
+                            layer.msg(data);
+                        },
+                        error: function (data) {
+                            //layer.close(loading);
+                            layer.msg('请求失败' + data);
+                        }
+                    });
+                    layer.close(index);
+                });
+
+
+            } else if (obj.event === 'edit') {
+                // var index = layer.open({
+                //     type: 2,
+                //     content: 'cjxq.html?appid='+data.id,
+                //     area: ['800px', '600px'],
+                //     maxmin: true,
+                //     title:'插件详情编辑 - '+data.app_name+'('')'
+                // });
+                // layer.full(index);
+                vipTab.add($(this), '应用详情编辑(' + data.app_name + ')', 'html/xqbj.html?appid=' + data.id);
+                //layer.alert('编辑行：<br>'+JSON.stringify(data))
+            } else if (obj.event === 'key') {
+                $.ajax({
+                    url: '../ajax.php?mod=appkey',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: 'appid=' + data.id,
+                    success: function (data) {
+                        //layer.close(loading);
+                        layer.open({
+                            content: '<div style="padding: 20px">' + data + '<br><br><button class="layui-btn layui-btn-normal" style="width: 100%" onclick="resetkey(' + obj.data.id + ')">重置秘钥</button></div>',
+                            type: 1,
+                            area: [500, 500]
+                        });
+                    },
+                    error: function (data) {
+                        //layer.close(loading);
+                        layer.msg('请求失败' + data);
+                    }
+                })
+
+                //layer.alert('编辑行：<br>'+ JSON.stringify(data))
+            }
+
+
+        });
+        table.on('edit(applist)', function (obj) {
+            var value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+            //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            $.ajax({
+                url: '../ajax.php?mod=savechange',
+                type: 'POST',
+                dataType: 'html',
+                data: 'appid=' + data.id + '&mod=' + obj.field + '&status=' + obj.value,
+                success: function (data) {
+                    //layer.close(loading);
+                    layer.msg(data);
+                },
+                error: function (data) {
+                    //layer.close(loading);
+                    layer.msg('请求失败' + data);
+                }
+            })
+        });
+
+
+    });
+
+    function openandoff(appid, name, status) {
+
+        $.ajax({
+            url: '../ajax.php?mod=savechange',
+            type: 'POST',
+            dataType: 'html',
+            data: 'appid=' + appid + '&mod=' + name + '&status=' + status,
+            success: function (data) {
+                //layer.close(loading);
+                layer.msg(data);
+            },
+            error: function (data) {
+                //layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+
+    function resetkey(appid) {
+        $.ajax({
+            url: '../ajax.php?mod=resetkey',
+            type: 'POST',
+            dataType: 'html',
+            data: 'appid=' + appid,
+            success: function (data) {
+				layer.alert(data);
+            },
+            error: function (data) {
+                //layer.close(loading);
+                layer.msg('请求失败' + data);
+            }
+        })
+    }
+</script>
+</body>
+</html>
