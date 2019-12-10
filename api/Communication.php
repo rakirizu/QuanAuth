@@ -191,7 +191,7 @@ if ($data['mod'] == 'GetCustumData'){
     $communication->back(1,'',array('data'=>$appinfo['data']));
 }
 
-if ($data['mod'] == 'GetAppinfo'){
+if ($data['mod'] == 'GetAppInfo'){
     if (empty($data['token']) || !$tokeninfo = $db->select_first_row('sq_token','uid',array('token'=>$data['token']),'AND')) $communication->back(-201,'InitTimeOut');
 
     $bool = true;
