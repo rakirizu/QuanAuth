@@ -103,13 +103,16 @@ class db
     	
         $return = $this->query('SHOW FULL COLUMNS FROM ' . $table);
         while ($info = $return->fetch_assoc()) {
-            if ($info['Field'] == 'ID' or $info['Field'] == 'id' or $info['Field'] == 'Id' or $info['Field'] == 'iD') {
-                $data[$info['Field']] = '{nullvaluereplace}';
-            } else if (stristr($info['Type'], 'int') || stristr($info['Type'], 'bigint') || stristr($info['Type'], 'integer') || stristr($info['Type'], 'double')) {
-                $data[$info['Field']] = '{intvaluereplace}';
-            } else {
-                $data[$info['Field']] = '';
-            }
+        	if(empty($data[$info['Field']]) ){
+	            if ($info['Field'] == 'ID' or $info['Field'] == 'id' or $info['Field'] == 'Id' or $info['Field'] == 'iD') {
+	                $data[$info['Field']] = '{nullvaluereplace}';
+	            } else if (stristr($info['Type'], 'int') || stristr($info['Type'], 'bigint') || stristr($info['Type'], 'integer') || stristr($info['Type'], 'double')) {
+	                $data[$info['Field']] = '{intvaluereplace}';
+	            } else {
+	                $data[$info['Field']] = '';
+	            }
+        	}
+        	
         }
 		$column = '';
 		$value = '';
@@ -122,7 +125,11 @@ class db
                 } else if ($v == '{intvaluereplace}') {
                     $value = '0';
                 } else {
-                    $value = '\'' . addslashes($v) . '\'';
+                	if(is_int($v) || is_float($v) || is_double($v)){
+                		$value =  $v ;
+                	}else{
+                    	$value = '\'' . addslashes($v) . '\'';
+                	}
                 }
             } else {
                 $column .= ',' . $k;
@@ -131,7 +138,12 @@ class db
                 } else if ($v == '{intvaluereplace}') {
                     $value .= ',0';
                 } else {
-                    $value .= ',\'' . addslashes($v) . '\'';
+                	if(is_int($v) || is_float($v) || is_double($v)){
+                		 $value .= ', ' . addslashes($v) ;
+                	}else{
+                    	 $value .= ', \'' . addslashes($v) . '\'';
+                	}
+                   
                 }
 			
             }
