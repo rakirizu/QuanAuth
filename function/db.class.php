@@ -100,6 +100,7 @@ class db
 
     public function insert_back_id($table, $data)
     {
+    	
         $return = $this->query('SHOW FULL COLUMNS FROM ' . $table);
         while ($info = $return->fetch_assoc()) {
             if (!isset($data[$info['Field']])) {
@@ -114,9 +115,10 @@ class db
 
             }
         }
-
+		$column = '';
+		$value = '';
         foreach ($data as $k => $v) {
-
+            
             if (empty($column)) {
                 $column = $k;
                 if ($v == '{nullvaluereplace}') {
@@ -135,7 +137,7 @@ class db
                 } else {
                     $value .= ',\'' . addslashes($v) . '\'';
                 }
-
+			
             }
         }
 
