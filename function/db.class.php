@@ -103,16 +103,12 @@ class db
     	
         $return = $this->query('SHOW FULL COLUMNS FROM ' . $table);
         while ($info = $return->fetch_assoc()) {
-            if (!isset($data[$info['Field']])) {
-
-                if ($info['Field'] == 'ID' or $info['Field'] == 'id' or $info['Field'] == 'Id' or $info['Field'] == 'iD') {
-                    $data[$info['Field']] = '{nullvaluereplace}';
-                } else if (stristr($info['Type'], 'int') || stristr($info['Type'], 'bigint') || stristr($info['Type'], 'integer') || stristr($info['Type'], 'double')) {
-                    $data[$info['Field']] = '{intvaluereplace}';
-                } else {
-                    $data[$info['Field']] = '';
-                }
-
+            if ($info['Field'] == 'ID' or $info['Field'] == 'id' or $info['Field'] == 'Id' or $info['Field'] == 'iD') {
+                $data[$info['Field']] = '{nullvaluereplace}';
+            } else if (stristr($info['Type'], 'int') || stristr($info['Type'], 'bigint') || stristr($info['Type'], 'integer') || stristr($info['Type'], 'double')) {
+                $data[$info['Field']] = '{intvaluereplace}';
+            } else {
+                $data[$info['Field']] = '';
             }
         }
 		$column = '';
