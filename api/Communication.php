@@ -14,7 +14,6 @@ include '../function/function_app.php';
 include '../function/Tips.php';
 if (!empty($_GET['c']) && $_GET['c'] == 'api') include '../function/api.class.php';else include '../function/Encryption.class.php';
 
-
 if (empty($_GET['appid'])) die(makejson(-1,$Tips['NoAppID']));
 if (strlen($_GET['sign']) !== 32) die(makejson(-2,$Tips['NoSign']));
 $data = $_POST['data'];
