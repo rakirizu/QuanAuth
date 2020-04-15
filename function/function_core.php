@@ -177,7 +177,8 @@ function get_real_ip()
             $ip = FALSE;
         }
         for ($i = 0; $i < count($ips); $i++) {
-            if (@!preg_match("^(10|172\.16|192\.168)\.", $ips[$i])) {
+            $istart = substr($str , 0 , 3);
+            if ($istart != "10." && $istart != "172" && $istart != "16." && $istart != "192" && $istart != "168"){
                 $ip = $ips[$i];
                 break;
             }
