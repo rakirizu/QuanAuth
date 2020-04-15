@@ -19,6 +19,7 @@ if ($tradinfo['status'] != '1') {
 }
 
 if ($tradinfo['paymoney'] == 0) {
+    $time = time();
     $db->update('sq_trade', array('tradeno' => $_GET['tradeno']), 'AND', array('overtime' => $time, 'status' => '2'));
     tips('该订单为免费订单，点击确定跳转到结果页...', "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . "/payresult.php?tradeno=" . $_GET['tradeno']);
 
