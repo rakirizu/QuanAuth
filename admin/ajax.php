@@ -1203,6 +1203,18 @@ switch ($_GET['mod']){
         }
         $balance = $_POST['kt_num'];
         include '../function/function_auth.php';
+        if(!isset($_POST['kt_ip'])){
+            $_POST['kt_ip'] = '';
+        }
+        if(!isset($_POST['kt_ip'])){
+            $_POST['kt_ip'] = '';
+        }
+        if(!isset($_POST['kt_robotqq'])){
+            $_POST['kt_robotqq'] = '';
+        }
+        if(!isset($_POST['kt_mac'])){
+            $_POST['kt_mac'] = '';
+        } 
         if ($appinfo['logintype'] == 'jcbd'){
             $_POST['kt_user'] = json_encode(array(
                 'lip'=>$_POST['kt_ip'],
