@@ -134,9 +134,9 @@
             dataType: 'json',
             data: '',
             success: function (data) {
-                $("input[name='alipaytype'][value=" + data.alipaytype + "]").attr("checked", true);
-                $("input[name='qqpaytype'][value=" + data.qqpaytype + "]").attr("checked", true);
-                $("input[name='wxpaytype'][value=" + data.wxpaytype + "]").attr("checked", true);
+                $("input[name='alipaytype'][value='" + data.alipaytype + "']").attr("checked", true);
+                $("input[name='qqpaytype'][value='" + data.qqpaytype + "']").attr("checked", true);
+                $("input[name='wxpaytype'][value='" + data.wxpaytype + "']").attr("checked", true);
                 $("input:checkbox[name=indexpage]").attr("checked", data.xtsy);
                 $("input:checkbox[name=onlinepay]").attr("checked", data.kqxt);
                 $("input:checkbox[name=emailtip]").attr("checked", data.yjtx);
