@@ -29,7 +29,7 @@ function funException($e) {
         $error['file']  =   $e->getFile();
         $error['line']  =   $e->getLine();
     }
-	echo($error['message'].$error['file']." 第 ".$error['line']." 行.\r\n".$e->getTraceAsString()."\r\n");
+	//echo($error['message'].$error['file']." 第 ".$error['line']." 行.\r\n".$e->getTraceAsString()."\r\n");
 	$db->posterror($error['message'].$error['file']." 第 ".$error['line']." 行.\r\n".$e->getTraceAsString(),'warning');
 }
 set_error_handler('funError');
