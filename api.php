@@ -142,7 +142,7 @@ switch ($_GET['mod']){
         }else if ($appinfo['logintype'] == 'jcbd'){
             $where['appid'] = $_GET['appid'];
             if ($appinfo['bindip'] == '1'){
-                $where['lip'] = $postdata['lip'];
+                $where['lip'] = $userip;
             }
             if ($appinfo['bindmac'] == '1'){
                 $where['mac'] = $postdata['mac'];
