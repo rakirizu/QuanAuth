@@ -1062,6 +1062,7 @@ switch ($_GET['mod']){
 
         break;
     case 'checkupdate':
+		die(-1);
         $newver = curl_request('http://download.bwenquan.com/update/shouquanver.txt');
 
         if ($newver > $G['siteinfo']['ver'] ){
@@ -1203,9 +1204,6 @@ switch ($_GET['mod']){
         }
         $balance = $_POST['kt_num'];
         include '../function/function_auth.php';
-        if(!isset($_POST['kt_ip'])){
-            $_POST['kt_ip'] = '';
-        }
         if(!isset($_POST['kt_ip'])){
             $_POST['kt_ip'] = '';
         }
