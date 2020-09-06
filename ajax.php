@@ -1077,7 +1077,7 @@ function buy_submit(id,type) {
         }
 
         include_once './function/function_app.php';
-        if(!$appinfo = app_idgetinfo($_POST['appid'])){
+        if(!$appinfo = app_idgetinfo($_POST['applist'])){
             die('服务器错误：应用无法找到');
         }
         $updata['sendtime'] = 0;
