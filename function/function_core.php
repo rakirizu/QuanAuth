@@ -13,27 +13,7 @@ define('IN_SYS', true);//初始化系统
 
 
 error_reporting(E_ALL);
-function funError($errno, $errstr, $errfile, $errline,$errcontext) {
-    throw new Exception($errstr);
-}
 
-function funException($e) {
-    global $db;
-    $error = array();
-    $error['message']   =   $e->getMessage();
-    $trace              =   $e->getTrace();
-    if('E'==$trace[0]['function']) {
-        $error['file']  =   $trace[0]['file'];
-        $error['line']  =   $trace[0]['line'];
-    }else{
-        $error['file']  =   $e->getFile();
-        $error['line']  =   $e->getLine();
-    }
-	//echo($error['message'].$error['file']." 第 ".$error['line']." 行.\r\n".$e->getTraceAsString()."\r\n");
-	$db->posterror($error['message'].$error['file']." 第 ".$error['line']." 行.\r\n".$e->getTraceAsString(),'warning');
-}
-set_error_handler('funError');
-set_exception_handler('funException');
 /*
  * 初始化脚本
  */
@@ -368,9 +348,46 @@ function curl_request($url, $post = '', $cookie = '', $returnCookie = 0)
 /**
  * 调用温泉云平台进行邮件发送
  */
-function sendemail($title, $contant, $tomail, &$msg = '')
+function sendemail($title, $contant, $tomail, &$msg = '', $debug = false)
 {
     global $G,$ServerURL;
+	require_once ('PHPMailer.php');
+    require_once ('SMTP.php');
+    require_once ('Exception.php');
+    $mail = new \PHPMailer\PHPMailer\PHPMailer();
+    $mail->SMTPDebug = $debug;
+    $mail->isSMTP();
+    $mail->SMTPAuth = true;
+    $mail->Host = $G['config']['smtp_address'];
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port = $G['config']['smtp_port'];
+    $mail->CharSet = 'UTF-8';
+    $mail->FromName = $G['config']['sitename'];
+    $mail->Username = $G['config']['smtp_user'];
+    $mail->Password = $G['config']['smtp_pass'];
+    $mail->From = $G['config']['smtp_user'];
+    $mail->isHTML(true);
+    $mail->addAddress($tomail);
+    $mail->Subject = $title;
+    $mail->Body = $contant;
+    $mail->SMTPOptions = array(
+       'ssl' => array(
+           'verify_peer' => false,
+           'verify_peer_name' => false,
+           'allow_self_signed' => true
+        )
+    );
+	echo $mail->SMTPDebug;
+    $re = $mail->send();
+    if($re){
+        return true;
+    }else{
+        $msg = '邮件发送失败返回错误：'.$mail->ErrorInfo;
+        return false;
+    }
+	
+	
+	/*
     foreach ($_POST as $v=>$value){
         $_POST[$v] = urlencode($value);
     }
@@ -382,9 +399,7 @@ function sendemail($title, $contant, $tomail, &$msg = '')
     $ev['tomail'] = urlencode($tomail);
     $ev['subject'] = urlencode($title);
     $ev['content'] = urlencode($contant);
-
-    $post = "server={$ev['server']}&port={$ev['port']}&username={$ev['username']}&password={$ev['password']}&formname={$ev['formname']}&tomail={$ev['tomail']}&subject={$ev['subject']}&content={$ev['content']}";
-
+    //$post = "server={$ev['server']}&port={$ev['port']}&username={$ev['username']}&password={$ev['password']}&formname={$ev['formname']}&tomail={$ev['tomail']}&subject={$ev['subject']}&content={$ev['content']}";
     $back = curl_request($ServerURL.'?mod=sendmail&domain=' . urlencode($_SERVER['HTTP_HOST']) . '&sitekey=' . $G['config']['sitekey'], $post);
     if (!$json = json_decode($back, true)) {
         $msg = '返回数据解析失败：'.$back;
@@ -397,6 +412,7 @@ function sendemail($title, $contant, $tomail, &$msg = '')
         $msg = 'success';
         return true;
     }
+	*/
 }
 
 function show_page_404()
@@ -405,7 +421,7 @@ function show_page_404()
 }
 
 
-function SendTipsMail($tomail,$content,&$BackMsg){
+function SendTipsMail($tomail,$content,&$BackMsg,$debug = false){
 
     global $G,$MailTipsCon,$MailTipsFram,$MailTipsLine;
     $c = '';
@@ -417,7 +433,7 @@ function SendTipsMail($tomail,$content,&$BackMsg){
         $c .= str_replace('[content]',$con,str_replace('[title]',$array['title'],$MailTipsCon));
     }
     $html = str_replace('[content]',$c,$MailTipsFram);
-    return sendemail('系统提醒 - '.$G['config']['sitename'],$html,$tomail,$BackMsg);
+    return sendemail('系统提醒 - '.$G['config']['sitename'],$html,$tomail,$BackMsg,$debug);
 }
 
 function GetOriginText($origin){
