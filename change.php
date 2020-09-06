@@ -219,7 +219,7 @@
             dataType: 'html',
             data: postvalue+'token=',
             success: function (data) {
-                layer.alert(data.msg);
+                layer.alert(data);
                 layer.close(loading);
             },
             error: function (data) {
