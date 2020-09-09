@@ -20,7 +20,7 @@ class Verification
             <script>
                 vaptcha({
                     //配置参数
-                    vid: \'5aa3579ba4868a214c8f7b63\', // 验证单元id
+                    vid: \''.$G['config']['codevid'].'\', // 验证单元id
                     type: \'click\', // 展现类型 点击式
                     container: \'#vaptchaContainer\' // 按钮容器，可为Element 或者 selector
                 }).then(function (vaptchaObj) {
