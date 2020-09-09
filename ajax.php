@@ -59,7 +59,7 @@ switch ($_GET['mod']) {
                 $appinfo['imgsrc'] = './mdl/dog.png';
             }
             $info .= '<div style="display: inline-block;padding: 10px;"><div class="demo-card-square mdl-card mdl-shadow--2dp">
-  <div class="mdl-card__title mdl-card--expand"  style="color: #fff;text-shadow: #000 1px 1px 1px;background: url(\'' . $appinfo['imgsrc'] . '\') top left no-repeat #46B6AC;background-size: 100% 100%;">
+  <div class="mdl-card__title mdl-card--expand"  style="color: #fff;text-shadow: #000 1px 1px 1px;background: url(' . $appinfo['imgsrc'] . ') top left no-repeat #46B6AC;background-size: 100% 100%;">
     <h2 class="mdl-card__title-text">' . $item['fidname'] . '</h2>
   </div>
   
