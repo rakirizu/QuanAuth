@@ -202,6 +202,7 @@ function auth_add($username,$password,$ip,$balance,$uqq,$mail,$appid,$origin,$oi
             $search['mac'] = $chect['mac'];
             $T['content'][] = '绑定设备：'.$chect['mac'];
         }
+        $search['appid'] = $appid;
         if (!isset($chect['lip'])){
             $chect['lip'] = '';
         }
