@@ -37,9 +37,9 @@ if ($verify_result) {
                   $db->update('sq_agent',array('ID'=>$tradeinfo['agentid']),'AND',array('money'=>$lastmoney,'allspend'=>$allspend));
               }*/
             $db->update('sq_trade', array('tradeno' => $out_trade_no), 'AND', array('overtime' => time(), 'status' => '2'));
-            tips('订单校验成功，点击确认跳转至结果页...', "../../../payresult.php?tradeno=" . $out_trade_no);
+            tips('订单校验成功，点击确认跳转至结果页...', "../../payresult.php?tradeno=" . $out_trade_no);
         } else if ($tradeinfo['status'] == '2') {
-            tips('订单校验成功，点击确认跳转至结果页...', "../../../payresult.php?tradeno=" . $out_trade_no);
+            tips('订单校验成功，点击确认跳转至结果页...', "../../payresult.php?tradeno=" . $out_trade_no);
         } else {
             tips('订单状态不正常，无法继续处理！');
         }
