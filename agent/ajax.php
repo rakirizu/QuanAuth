@@ -447,10 +447,9 @@ switch ($_GET['mod']) {
         } else if ($appinfo['logintype'] == 'kmsq') {
             //卡密方式
             if (empty($_POST['kt_user']) || !$userinfo = $db->select_first_row('sq_user', '*', array('username' => $_POST['kt_user'], 'appid' => $fidinfo['appid']), 'AND')) {
-                $userkey = $userinfo['username'];
+                $_POST['kt_user'] = '';
                 $tips .= '开通方式：新开卡密<br>';
             } else {
-                $userkey = '';
                 $tips .= '开通方式：续费卡密(' . $_POST['kt_user'] . ')<br>';
             }
             $newtrade = array('name' => $fidinfo['fidname'],
