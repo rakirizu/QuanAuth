@@ -596,7 +596,7 @@ function dofill() {
             echo '所属应用：' . $appinfo['appname'] . '<br>';
             if ($appinfo['usetype'] == 'dqsj') {
                 if ($qqinfo['balance'] == '-1') {
-                    echo '到期时间：永久授权';
+                    echo '到期时间：永久授权<br>';
                 } else {
                     echo '到期时间：' . Get_Date($qqinfo['balance']) . '<br>';
                 }
