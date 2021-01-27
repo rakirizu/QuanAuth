@@ -19,7 +19,7 @@ if ($_GET['mod'] === 'login'){
             $_SESSION['admin_password'] = $result['password'];
             $_SESSION['admin_HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
             //$db->insert_back_id('sq_log_system',array('time'=>time(),'ip'=>get_real_ip(),'msg'=>'管理员 '.$_POST['username'].'使用API秘钥登陆成功','type'=>'success'));
-            $db->posterror('管理员 '.$_POST['username'].'使用API秘钥登陆成功','success');
+            $db->posterror('管理员 '.$result['username'].'使用API秘钥登陆成功','success');
             die(json_encode(array('code' => '1', 'msg' => '登陆成功')));
         }
     }
