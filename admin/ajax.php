@@ -16,7 +16,7 @@ if ($_GET['mod'] === 'login'){
             $_SESSION['admin_username'] = $result['username'];
             $_SESSION['admin_id'] = $result['ID'];
             $_SESSION['admin_qq'] = $result['qq'];
-            $_SESSION['admin_password'] = md5($result['password']);
+            $_SESSION['admin_password'] = $result['password'];
             $_SESSION['admin_HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
             //$db->insert_back_id('sq_log_system',array('time'=>time(),'ip'=>get_real_ip(),'msg'=>'管理员 '.$_POST['username'].'使用API秘钥登陆成功','type'=>'success'));
             $db->posterror('管理员 '.$_POST['username'].'使用API秘钥登陆成功','success');
