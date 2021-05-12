@@ -1321,10 +1321,10 @@ switch ($_GET['mod']){
         die(json_encode(array('present'=>$info['discount'],'info'=>$info['subordinate'])));
         break;
     case 'getnotice':
-        die(curl_request('http://download.bwenquan.com/update/sqnotice.txt'));
+        die('GitHub地址：https://github.com/bwenquan/QuanAuth');
         break;
     case 'getuplog':
-        die(curl_request('http://download.bwenquan.com/update/squpdatelog.txt'));
+        die('请访问GitHub本人项目查看');
         break;
     case 'gettoken':
         $result = $db->select_first_row('sq_admin','accesstoken',array('username'=>$_SESSION['admin_username'],'password'=>$_SESSION['admin_password']),'AND');
