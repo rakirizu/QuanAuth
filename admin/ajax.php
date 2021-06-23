@@ -1223,7 +1223,7 @@ switch ($_GET['mod']){
         if (empty($_POST['kt_pass'])){
             $_POST['kt_pass'] = '';
         }
-        $back = auth_add($_POST['kt_user'],$_POST['kt_pass'],'',$_POST['kt_num'],$_POST['kt_adminqq'],$_POST['kt_mail'],$_POST['id'],1,$_SESSION['admin_id'],$newkey,$tips,array());
+        $back = auth_add($_POST['kt_user'],$_POST['kt_pass'],'',$_POST['kt_num'],$_POST['kt_adminqq'],$_POST['kt_mail'],$_POST['id'],1,'',$_SESSION['admin_id'],$newkey,$tips,array());
         if ($back == 3){
             die('成功生成卡密：'.$newkey);
         }else if ($back == 1){
