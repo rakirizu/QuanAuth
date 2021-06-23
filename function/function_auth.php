@@ -63,7 +63,7 @@ function auth_add($username,$password,$ip,$balance,$uqq,$mail,$appid,$origin,$oi
                     'rtime' => time(),
                     'status' => '1',
                     'appid' => $appid,
-                    'aid' => $oid,
+                    'aid' => $aid,
                     'balance'=>$balance,
                     'origin' => $origin,
                     'oid'=>$oid
@@ -143,7 +143,7 @@ function auth_add($username,$password,$ip,$balance,$uqq,$mail,$appid,$origin,$oi
                 'origin' => $origin,
                 'oid'=>$oid,
                 'appid' => $appid,
-                'aid' => $oid,
+                'aid' => $aid,
             ));
             $T['content'][] = '授权来源：'.GetOriginText($origin);
             $T['content'][] = '联系方式：QQ '.$uqq;
@@ -242,7 +242,7 @@ function auth_add($username,$password,$ip,$balance,$uqq,$mail,$appid,$origin,$oi
                 'rqq' => $chect['rqq'],
                 'rip' => $ip,
                 'lip' => $chect['lip'],
-                'aid' => $oid,
+                'aid' => $aid,
                 'origin' => $origin,
                 'oid'=>$oid,
             ));
