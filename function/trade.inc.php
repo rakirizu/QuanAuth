@@ -41,7 +41,7 @@ function trade_do($tradeinfo){
         $allspend = $agentinfo['allspend'] + $tradeinfo['paymoney'];
         $db->update('sq_agent', array('ID' => $tradeinfo['agentid']), 'AND', array('allspend' => $allspend));
         include_once 'function_auth.php';
-        $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],4,$agentinfo['ID'],$newkey,$tips);
+        $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],4,'',$agentinfo['ID'],$newkey,$tips);
         if ($back == 1){
             return makejson(1,'授权新增成功');
         }else if ($back==2){
@@ -58,7 +58,11 @@ function trade_do($tradeinfo){
             return makejson(-301,'商品信息拉取失败');
         }
         include_once 'function_auth.php';
-        $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],2,$tradeinfo['ID'],$newkey,$tips);
+        if (!$kamiinfo = $db->select_first_row('sq_key','*',array('kami'=>$tradeinfo['kami']),'AND'))
+        {
+            return makejson(-301,'卡密不存在');
+        }
+        $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],2,$kamiinfo['ID'],$kamiinfo['aid'],$newkey,$tips);
         if ($back == 1){
             return makejson(1,'授权新增成功');
         }else if ($back==2){

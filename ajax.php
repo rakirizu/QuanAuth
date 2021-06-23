@@ -871,7 +871,7 @@ function buy_submit(id,type) {
 		//$newtrade['ID'] = $db->insert_back_id('sq_trade', $newtrade);
 		
         include_once './function/function_auth.php';
-        $back = auth_add($newtrade['user'],$newtrade['pass'],$newtrade['ip'], $fidinfo['num'],$newtrade['uqq'],$newtrade['mail'],$fidinfo['appid'],3,$info['ID'],$newkey,$tips,$newtrade);
+        $back = auth_add($newtrade['user'],$newtrade['pass'],$newtrade['ip'], $fidinfo['num'],$newtrade['uqq'],$newtrade['mail'],$fidinfo['appid'],3,$info['ID'],$info['aid'],$newkey,$tips,$newtrade);
         $db->update('sq_fidkey',array('ID'=>$info['ID']),'AND',array('usetime'=>time(),'user'=>$newtrade['user']));
         if ($back == 1){
             die(makejson(1,$tips.'授权新开成功！'));

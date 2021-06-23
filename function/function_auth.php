@@ -22,7 +22,7 @@
  * @param string $tips 提示
  * @return int 1为新开成功，2为续费成功，3为卡密新开成功
  */
-function auth_add($username,$password,$ip,$balance,$uqq,$mail,$appid,$origin,$oid,&$newkey,&$tips,$tradeinfo = array()){
+function auth_add($username,$password,$ip,$balance,$uqq,$mail,$appid,$origin,$oid,$aid,&$newkey,&$tips,$tradeinfo = array()){
     include_once 'function_app.php';
     global $db,$G,$MailTips;
 
