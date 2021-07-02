@@ -413,6 +413,13 @@ switch ($_GET['mod']) {
         if (!$levelinfo = $db->select_first_row('sq_level', '*', array('ID' => $agentinfo['levelid']), 'AND')) {
             die(json_encode(array('code' => -2, 'msg' => '代理对应的等级信息获取失败！')));
         }
+
+        $applist = explode(',', $levelinfo['appid']);
+        $backinfo = array();
+        if (!in_array($fidinfo['appid'], $applist)) {
+            die(json_encode(array('code' => -4, 'msg' => '您没有权限开通此商品')));
+        }
+
         $spendmoney = $fidinfo['agentprice'] * $_POST['kt_num'] * $levelinfo['fracture'];
         $tips .= '应付金额：' . $spendmoney . '<br>';
         if ($spendmoney < 0) {
