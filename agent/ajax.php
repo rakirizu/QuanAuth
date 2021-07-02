@@ -4,6 +4,7 @@
  * User: 温泉
  * Date: 2017-10-19
  * Time: 22:12
+ * ceshi
  */
 include '../function/function_core.php';
 if ($_GET['mod'] === 'login') {
