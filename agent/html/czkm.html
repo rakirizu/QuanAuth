@@ -108,20 +108,16 @@
 
         //监听性别操作
         form.on('switch', function (obj) {
-            layer.load();
             $.ajax({
                 url: '../ajax.php?mod=keystatus',
                 type: 'POST',
-                dataType: 'json',
+                dataType: 'html',
                 data: 'keyid=' + this.value + '&status=' + obj.elem.checked,
                 success: function (data) {
-                    layer.close(loading);
-                    layer.alert(data.msg);
-
+                    layer.msg(data);
                 },
                 error: function (data) {
-                    layer.close(loading);
-                    layer.msg('['+data.status+']'+data.statusText);
+                    layer.msg('请求失败' + data);
                 }
             });
         });
@@ -234,7 +230,25 @@
     });
 
     function Kami(operation) {
-        layer.confirm('确定要执行操作：' + operation + '？', function () {
+        if (operation == "ExportNoUse"){
+            text = "导出未使用卡密";
+        }
+        if (operation == "ExportNoMoney"){
+            text = "导出零余额卡密";
+        }
+        if (operation == "ExportAll"){
+            text = "导出全部卡密";
+        }
+        if (operation == "DelNoMoney"){
+            text = "清空零余额卡密";
+        }
+        if (operation == "DelNoUse"){
+            text = "清空未使用卡密";
+        }
+        if (operation == "DelAll"){
+            text = "清空全部卡密";
+        }
+        layer.confirm('确定要执行操作：' + text + '？', function () {
             var loading = layer.load();
             $.ajax({
                 url: '../ajax.php?mod=KeyOperation',
@@ -243,7 +257,7 @@
                 data: 'operation=' + operation,
                 success: function (data) {
                     if (data.code === 1){
-                        layer.alert('您的卡密已就绪，<a href="../ajax.php?mod=download&sign='+data.sign+'">点击这里下载卡密</a>');
+                        layer.alert('您的卡密已就绪：<a target="_blank" href="../ajax.php?mod=download&sign=' + data.sign + '"><B><font color="red">点击这里下载卡密</font></B></a><br>注意：由于服务器生成文件速度慢，点击下载后请等待下载成功后再关闭页面！');
                     }else if (data.code === 2){
                         layer.alert('操作成功，总共影响'+data.nums+'行数据');
                     }else{
