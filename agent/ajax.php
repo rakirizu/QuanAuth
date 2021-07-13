@@ -1011,7 +1011,10 @@ switch ($_GET['mod']) {
         if (!$agentinfo = $db->select_first_row('sq_agent', '*', array('username' => $_SESSION['agent_username']), 'AND')) {
             die(json_encode(array('code' => -3, 'msg' => '代理信息获取失败')));
         }
-        $spendmoney = $fidinfo['agentprice'] * $count;
+        if (!$levelinfo = $db->select_first_row('sq_level', '*', array('ID' => $agentinfo['levelid']), 'AND')) {
+            die(json_encode(array('code' => -2, 'msg' => '代理对应的等级信息获取失败！')));
+        }
+        $spendmoney = $fidinfo['agentprice'] * $count * $levelinfo['fracture'];
         if ($spendmoney > $agentinfo['money']){
             die(makejson(-10,'代理余额不足'.$spendmoney.'，请先进行充值'));
         }
