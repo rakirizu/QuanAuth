@@ -786,6 +786,9 @@ switch ($_GET['mod']) {
         if ($_POST['leval'] == 0) {
             die('请先选择一个代理等级');
         }
+        if (empty($_POST['qq'])) {
+            die('代理QQ不能为空');
+        }
         if (!$levelinfo = $db->select_first_row('sq_level', '*', array('ID' => $_POST['leval']), 'AND')) {
             die('等级信息获取失败，无法继续开通！');
         }
@@ -811,7 +814,7 @@ switch ($_GET['mod']) {
         if (!$db->update('sq_agent', array('username' => $_SESSION['agent_username']), 'AND', array('money' => $newmoney))) {
             die('系统内部错误，开通失败！');
         } else {
-            if (!$db->insert_back_id('sq_agent', array('username' => $_POST['username'], 'password' => $_POST['pass'], 'begintime' => time(), 'levelid' => $_POST['leval'], 'status' => '1', 'superior' => $_SESSION['agent_id']))) {
+            if (!$db->insert_back_id('sq_agent', array('username' => $_POST['username'], 'password' => $_POST['pass'], 'qq' => $_POST['qq'], 'begintime' => time(), 'levelid' => $_POST['leval'], 'status' => '1', 'superior' => $_SESSION['agent_id']))) {
                 die('您的余额已扣除但是内部发生错误，下级开通失败，请联系管理员处理！' . $db->geterror());
             } else {
                 $db->insert_back_id('sq_log_agent', array('time' => time(), 'aid' => $_SESSION['agent_id'], 'ip' => get_real_ip(), 'msg' => '成功开通下级代理 ' . $_POST['username']));
