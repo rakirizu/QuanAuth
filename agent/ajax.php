@@ -1027,11 +1027,18 @@ switch ($_GET['mod']) {
             die(json_encode(array('code'=>'1','sign'=>$sign,'keys'=>'您的卡密如下：'.$keylist)));
         }
         break;
-    case 'tckeystatus':
+    case 'fidkeystatus':
         if(!$db->update('sq_fidkey',array('ID'=>$_POST['keyid'],'aid'=>$_SESSION['agent_id']),'AND',array('status'=>textbooltonum($_POST['status'])))){
             die('更新失败'.$db->geterror());
         }else{
-            die('成功');
+            die('修改成功');
+        }
+        break;
+    case 'keystatus':
+        if(!$db->update('sq_key',array('ID'=>$_POST['keyid'],'aid'=>$_SESSION['agent_id']),'AND',array('status'=>textbooltonum($_POST['status'])))){
+            die('更新失败'.$db->geterror());
+        }else{
+            die('修改成功');
         }
         break;
     case 'deltckey':
