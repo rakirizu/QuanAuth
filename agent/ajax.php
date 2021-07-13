@@ -1211,8 +1211,9 @@ switch ($_GET['mod']) {
         }
         break;
     case 'keylog':
-        if (!$result = $db->select_limit_row('sq_log_kami','*','',0,array('keyid'=>$_POST['keyid'],'aid'=>$_SESSION['agent_id']),'AND',"ORDER BY time DESC")){
-            die(makejson(-1,'数据库中没有记录'));
+        // if (!$result = $db->select_limit_row('sq_log_kami','*','',0,array('keyid'=>$_POST['keyid'],'aid'=>$_SESSION['agent_id']),'AND',"ORDER BY time DESC")){
+        if (!$result = $db->select_limit_row('sq_log_kami','*','',0,array('keyid'=>$_POST['keyid']),'AND',"ORDER BY time DESC")){
+            die(makejson(-1,'没有查询到使用记录'));
         }
         die(makejson(1,'success',array('items'=>$result)));
         break;
