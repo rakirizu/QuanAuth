@@ -65,7 +65,7 @@
                     <button class="layui-btn" onclick="Kami('ExportNoUse')">导出未使用卡密</button>
                     <button class="layui-btn" onclick="Kami('ExportAll')">导出全部卡密</button>
                     <button class="layui-btn" onclick="Kami('DelNoUse')">清空未使用卡密</button>
-                    <button class="layui-btn" onclick="Kami('DelNoUse')">清空已使用卡密</button>
+                    <button class="layui-btn" onclick="Kami('DelUse')">清空已使用卡密</button>
                     <button class="layui-btn" onclick="Kami('DelAll')">清空全部卡密</button>
                 </div>
             </div>
@@ -150,7 +150,7 @@
         form.on('switch', function (obj) {
 
             $.ajax({
-                url: '../ajax.php?mod=tckeystatus',
+                url: '../ajax.php?mod=fidkeystatus',
                 type: 'POST',
                 dataType: 'html',
                 data: 'keyid=' + this.value + '&status=' + obj.elem.checked,
@@ -231,23 +231,43 @@
 
     function Kami(operation) {
         var fid = $('#demoReload').val();
-        layer.confirm('确定要执行操作：' + operation + '？', function (index) {
+        if (operation == "ExportNoUse"){
+            text = "导出未使用卡密";
+        }
+        if (operation == "ExportAll"){
+            text = "导出全部卡密";
+        }
+        if (operation == "DelNoUse"){
+            text = "清空未使用卡密";
+        }
+        if (operation == "DelUse"){
+            text = "清空已使用卡密";
+        }
+        if (operation == "DelAll"){
+            text = "清空全部卡密";
+        }
+        layer.confirm('确定要执行操作：' + text + '？', function () {
+            var loading = layer.load();
             $.ajax({
                 url: '../ajax.php?mod=FidKeyOperation',
                 type: 'POST',
-                dataType: 'html',
-                data: 'operation=' + operation+'&fid='+fid,
+                dataType: 'json',
+                data: 'operation=' + operation + '&fid=' + fid,
                 success: function (data) {
-                    table.reload('keylist', {
-                        url: '../ajax.php?mod=gettckeylist'
-                    });
-                    layer.msg(data);
+                    if (data.code === 1){
+                        layer.alert('您的卡密已就绪：<a target="_blank" href="../ajax.php?mod=download&sign=' + data.sign + '"><B><font color="red">点击这里下载卡密</font></B></a><br>注意：由于服务器生成文件速度慢，点击下载后请等待下载成功后再关闭页面！');
+                    }else if (data.code === 2){
+                        layer.alert('操作成功，总共影响' + data.nums + '行数据');
+                    }else{
+                        layer.alert(data.msg);
+                    }
+                    layer.close(loading);
                 },
                 error: function (data) {
-                    layer.msg('请求失败' + data);
+                    layer.msg('['+data.status+']'+data.statusText);
+                    layer.close(loading);
                 }
             });
-            layer.close(index);
         });
 
     }
