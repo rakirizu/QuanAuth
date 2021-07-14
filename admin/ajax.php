@@ -1242,7 +1242,7 @@ switch ($_GET['mod']){
             echo '['.Get_Date($value['time']).'] '.$value['msg'].'<br>';
         }
         echo '=======================<br>';
-        die('只列出最近五十条记录，若想查看更多，请前往数据库执行这行语句查询：[SELECT * FROM sq_log_agent WHERE aid='.$_POST['agentid'].']');
+        die('只列出最近五十条记录，若想查看更多，请前往数据库执行这行语句查询：[SELECT * FROM sq_log_agent WHERE aid='.$_POST['aid'].']');
         break;
     case 'saveintroduce':
         if (!$db->update('sq_apps',array('ID'=>$_POST['appid']),'AND',array('introduce'=>$_POST['content']))){
