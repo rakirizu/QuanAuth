@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
     <title>代理在线开通 - <?php echo $G['config']['sitename'] ?></title>
     <link rel="stylesheet" href="./mdl/material.min.css">
-    <script src="https://cdn.vaptcha.com/v2.js"></script>
+    <script src="https://v.vaptcha.com/v3.js"></script>
     <?php include './function/color.inc.html'?>
 </head>
 

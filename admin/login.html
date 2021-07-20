@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../static/frame/layui/css/layui.css">
     <link rel="stylesheet" href="../static/frame/static/css/style.css">
     <link rel="icon" href="../static/frame/static/image/code.png">
-    <script src="https://cdn.vaptcha.com/v2.js"></script>
+    <script src="https://v.vaptcha.com/v3.js"></script>
 <style>
     #canvas-cont {
         background-color: #222B3A;
@@ -86,7 +86,7 @@
                 url: 'ajax.php?mod=login',
                 type: 'POST',
                 dataType: 'json',
-                data: 'username=' + data.field.username + '&password=' + data.field.password + '&token=' + token,
+                data: 'username=' + data.field.username + '&password=' + data.field.password + '&accesstoken=' + token,
                 success: function (data) {
                     layer.close(loading);
                     if (data.code === '1') {
