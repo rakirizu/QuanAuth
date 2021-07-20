@@ -1063,7 +1063,7 @@ switch ($_GET['mod']){
         break;
     case 'checkupdate':
 		die(-1);
-        $newver = curl_request('http://download.bwenquan.com/update/shouquanver.txt');
+        $newver = curl_request('http://download.xiaod8.cn/update/shouquanver.txt');
 
         if ($newver > $G['siteinfo']['ver'] ){
             die('1');
@@ -1074,7 +1074,7 @@ switch ($_GET['mod']){
         break;
     case 'downloadupdatepacks':
         set_time_limit(0);
-        if(!getFile('http://download.wenquan6.cn/upload/shouquan/'.$G['siteinfo']['ver'].'.zip','../update/',$G['siteinfo']['ver'].'.zip')){
+        if(!getFile('http://download.xiaod8.cn/upload/shouquan/'.$G['siteinfo']['ver'].'.zip','../update/',$G['siteinfo']['ver'].'.zip')){
             die(json_encode(array('code'=>'-1','msg'=>'下载文件失败！')));
         }else{
             die(json_encode(array('code'=>'1')));
@@ -1242,7 +1242,7 @@ switch ($_GET['mod']){
             echo '['.Get_Date($value['time']).'] '.$value['msg'].'<br>';
         }
         echo '=======================<br>';
-        die('只列出最近五十条记录，若想查看更多，请前往数据库执行这行语句查询：[SELECT * FROM sq_log_agent WHERE aid='.$_POST['aid'].']');
+        die('只列出最近五十条记录，若想查看更多，请前往数据库执行这行语句查询：[SELECT * FROM sq_log_agent WHERE aid='.$_POST['agentid'].']');
         break;
     case 'saveintroduce':
         if (!$db->update('sq_apps',array('ID'=>$_POST['appid']),'AND',array('introduce'=>$_POST['content']))){
@@ -1321,10 +1321,10 @@ switch ($_GET['mod']){
         die(json_encode(array('present'=>$info['discount'],'info'=>$info['subordinate'])));
         break;
     case 'getnotice':
-        die('GitHub地址：https://github.com/bwenquan/QuanAuth');
+        die(curl_request('http://download.xiaod8.cn/update/notice.txt'));
         break;
     case 'getuplog':
-        die('请访问GitHub本人项目查看');
+        die(curl_request('http://download.xiaod8.cn/update/uplog.txt'));
         break;
     case 'gettoken':
         $result = $db->select_first_row('sq_admin','accesstoken',array('username'=>$_SESSION['admin_username'],'password'=>$_SESSION['admin_password']),'AND');
