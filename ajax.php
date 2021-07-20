@@ -99,7 +99,7 @@ switch ($_GET['mod']) {
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
     <title>授权在线开通 - '.$G['config']['sitename'].'</title>
     <link rel="stylesheet" href="./mdl/material.min.css">
-  <script src="https://cdn.vaptcha.com/v2.js"></script>
+  <script src="https://v.vaptcha.com/v3.js"></script>
 </head>
 <body class="flat-blue landing-page">';
         $output .= '<div id="submit_div" style="padding: 20px;">';
@@ -642,7 +642,7 @@ function dofill() {
     <meta name="apple-mobile-web-app-title" content="Material Design Lite">
     <title>使用卡密'.$_GET['kami'].' - '.$G['config']['sitename'].'</title>
     <link rel="stylesheet" href="./mdl/material.min.css">
-    <script src="https://cdn.vaptcha.com/v2.js"></script>
+    <script src="https://v.vaptcha.com/v3.js"></script>
 </head>
 <body class="flat-blue landing-page">';
         $output .= '<div id="submit_div" style="padding: 20px;">';

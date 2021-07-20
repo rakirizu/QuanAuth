@@ -4,7 +4,6 @@
  * User: 温泉
  * Date: 2017-10-19
  * Time: 22:12
- * 测试的
  */
 include '../function/function_core.php';
 if ($_GET['mod'] === 'login') {
@@ -414,11 +413,13 @@ switch ($_GET['mod']) {
         if (!$levelinfo = $db->select_first_row('sq_level', '*', array('ID' => $agentinfo['levelid']), 'AND')) {
             die(json_encode(array('code' => -2, 'msg' => '代理对应的等级信息获取失败！')));
         }
+
         $applist = explode(',', $levelinfo['appid']);
         $backinfo = array();
         if (!in_array($fidinfo['appid'], $applist)) {
             die(json_encode(array('code' => -4, 'msg' => '您没有权限开通此商品')));
         }
+
         $spendmoney = $fidinfo['agentprice'] * $_POST['kt_num'] * $levelinfo['fracture'];
         $tips .= '应付金额：' . $spendmoney . '<br>';
         if ($spendmoney < 0) {
@@ -819,7 +820,7 @@ switch ($_GET['mod']) {
         if (!$db->update('sq_agent', array('username' => $_SESSION['agent_username']), 'AND', array('money' => $newmoney))) {
             die('系统内部错误，开通失败！');
         } else {
-            if (!$db->insert_back_id('sq_agent', array('username' => $_POST['username'], 'password' => $_POST['pass'], 'qq' => $_POST['qq'], 'begintime' => time(), 'levelid' => $_POST['leval'], 'status' => '1', 'superior' => $_SESSION['agent_id']))) {
+            if (!$db->insert_back_id('sq_agent', array('username' => $_POST['username'], 'password' => $_POST['pass'],'qq' => $_POST['qq'], 'begintime' => time(), 'levelid' => $_POST['leval'], 'status' => '1', 'superior' => $_SESSION['agent_id']))) {
                 die('您的余额已扣除但是内部发生错误，下级开通失败，请联系管理员处理！' . $db->geterror());
             } else {
                 $db->insert_back_id('sq_log_agent', array('time' => time(), 'aid' => $_SESSION['agent_id'], 'ip' => get_real_ip(), 'msg' => '成功开通下级代理 ' . $_POST['username']));
