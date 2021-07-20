@@ -8,8 +8,8 @@
  */
 include '../function/function_core.php';
 if ($_GET['mod'] === 'login') {
-    if (!empty($_POST['token'])) {
-        if (!$result = $db->select_first_row('sq_agent', '*', array('accesstoken' => $_POST['token']), 'AND')) {
+    if (!empty($_POST['accesstoken'])) {
+        if (!$result = $db->select_first_row('sq_agent', '*', array('accesstoken' => $_POST['accesstoken']), 'AND')) {
             die(json_encode(array('code' => '-1', 'msg' => '秘钥错误')));
         } else {
             $_SESSION['agent_username'] = $_POST['username'];
