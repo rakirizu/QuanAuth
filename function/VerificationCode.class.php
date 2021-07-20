@@ -11,7 +11,7 @@ class Verification
             die('            <div class="vaptcha-init-main">
                 <div class="vaptcha-init-loading">
                     <a href="/" target="_blank">
-                        <img src="https://cdn.vaptcha.com/vaptcha-loading.gif" />
+                        <img src="https://r.vaptcha.net/public/img/vaptcha-loading.gif" />
                     </a>
                     <span class="vaptcha-text">Vaptcha启动中...</span>
                 </div>
@@ -51,7 +51,7 @@ class Verification
                     return false;
                 }
             }
-            $info = json_decode(curl_request('http://api.vaptcha.com/v2/validate', 'id=' . $G['config']['codevid'] . '&secretkey=' . $G['config']['codekey'] . '&token=' . $token . '&ip=' . get_real_ip()), true);
+            $info = json_decode(curl_request('http://0.vaptcha.com/validate', 'id=' . $G['config']['codevid'] . '&secretkey=' . $G['config']['codekey'] . '&token=' . $token . '&ip=' . get_real_ip()), true);
             if ($info['success'] == '1') {
                 return true;
             } else {
