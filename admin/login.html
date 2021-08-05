@@ -86,7 +86,7 @@
                 url: 'ajax.php?mod=login',
                 type: 'POST',
                 dataType: 'json',
-                data: 'username=' + data.field.username + '&password=' + data.field.password + '&accesstoken=' + token,
+                data: 'username=' + data.field.username + '&password=' + data.field.password + '&token=' + token,
                 success: function (data) {
                     layer.close(loading);
                     if (data.code === '1') {
