@@ -95,10 +95,10 @@ if ($data['mod'] === 'Login'){
     $db->update('sq_token',array('token'=>$data['token']),'AND',array('uid'=>$userinfo['ID'],'start'=>time()));
     //$db->insert_back_id('sq_token',array('token'=>$token,'uid'=>$userinfo['ID'],'lastest'=>$time,'start'=>$time));
     if ($appinfo['onlinecheck'] == 1) {
-        $onlineuser = $db->select_all_row('sq_token','lastest',array('uid'=>$userinfo['ID']),'AND','ORDER BY lastest DESC');
+        $onlineuser = $db->select_all_row('sq_token','lastest,ip',array('uid'=>$userinfo['ID']),'AND','ORDER BY lastest DESC');
         foreach ($onlineuser as $on){
             if ((time() - $on['lastest']) < $appinfo['onlinesecond']){
-                $communication->back(-301,'LoggedInTips',array('ip'=>$tokeninfo['ip'],''));
+                $communication->back(-301,'LoggedInTips',array('ip'=>$on['ip'],''));
             }else{
                 break;
             }
