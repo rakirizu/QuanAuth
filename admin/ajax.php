@@ -1556,7 +1556,7 @@ switch ($_GET['mod']){
                 die('成功删除'.(int)$db->affected_num().'行');
                 break;
             case 'DelUse':
-                $db->delete('sq_fidkey', '`usetime` > 0 AND `fid` = '.$_POST['fid'].' AND `aid` = '.$_SESSION['agent_id'].' AND `status` = 1','AND');
+                $db->delete('sq_fidkey', '`usetime` > 0 AND `fid` = '.$_POST['fid'].' AND `status` = 1','AND');
                 die('成功删除'.(int)$db->affected_num().'行');
                 break;
         }
