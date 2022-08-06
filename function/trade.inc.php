@@ -64,8 +64,11 @@ function trade_do($tradeinfo){
                 return makejson(-301,'卡密不存在');
             }
             $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],2,$kamiinfo['ID'],$kamiinfo['aid'],$newkey,$tips);
+        }elseif ($tradeinfo['paytype'] == 'zxzf') {
+            $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],2,0,0,$newkey,$tips);
+        }else {
+            return makejson(-302,'操作错误');
         }
-        $back = auth_add($tradeinfo['user'],$tradeinfo['pass'],$tradeinfo['ip'],$tradeinfo['num'] * $fidinfo['num'],$tradeinfo['uqq'],$tradeinfo['mail'],$fidinfo['appid'],2,0,0,$newkey,$tips);
         if ($back == 1){
             return makejson(1,'授权新增成功');
         }else if ($back==2){
