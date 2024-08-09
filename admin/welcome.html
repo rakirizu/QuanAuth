@@ -84,8 +84,8 @@
         <div class="layui-collapse">
             <div class="layui-colla-item">
                 <h2 class="layui-colla-title">来自温泉授权服务器的系统公告</h2>
-                <div class="flow-default layui-colla-content layui-show" id="notice">
-
+                <div class="flow-default layui-colla-content layui-show">
+                    <iframe src="https://github.com/rakirizu/QuanAuth/blob/main/README.md"></iframe>
                 </div>
             </div>
         </div>
@@ -107,7 +107,7 @@
             <div class="layui-colla-item">
                 <h2 class="layui-colla-title">系统更新日志</h2>
                 <div class="flow-default layui-colla-content layui-show" id="uplog">
-
+                    暂无
                 </div>
             </div>
         </div>
@@ -152,53 +152,53 @@
             }
         });
 
-        flow.load({
-            elem: '#notice'
-            , scrollElem: '#notice'
-            , done: function (page, next) {
-                var lis = [];
-                $.ajax({
-                    url: '../ajax.php?mod=getnotice',
-                    type: 'POST',
-                    dataType: 'html',
-                    data: '',
-                    success: function (data) {
-                        $('#notice').html(data);
-                        next();
-                    },
-                    error: function (data) {
-                        $('#notice').html('嗷呜o(╥﹏╥)o 获取公告请求失败啦');
-                        next();
-                    }
-                });
-                //假设总页数为 6
-            }
-        });
+        // flow.load({
+        //     elem: '#notice'
+        //     , scrollElem: '#notice'
+        //     , done: function (page, next) {
+        //         var lis = [];
+        //         $.ajax({
+        //             url: '../ajax.php?mod=getnotice',
+        //             type: 'POST',
+        //             dataType: 'html',
+        //             data: '',
+        //             success: function (data) {
+        //                 $('#notice').html(data);
+        //                 next();
+        //             },
+        //             error: function (data) {
+        //                 $('#notice').html('嗷呜o(╥﹏╥)o 获取公告请求失败啦');
+        //                 next();
+        //             }
+        //         });
+        //         //假设总页数为 6
+        //     }
+        // });
 
-        flow.load({
-            elem: '#uplog'
-            , scrollElem: '#uplog'
-            , done: function (page, next) {
-                var lis = [];
-                $.ajax({
-                    url: '../ajax.php?mod=getuplog',
-                    type: 'POST',
-                    dataType: 'html',
-                    data: '',
-                    success: function (data) {
-                        $('#uplog').html('<div style="width: 100%;height: 800px;">\n' +
-                            '      <textarea class="layui-textarea" style="width: 100%;height: 800px;">' + data + '</textarea>\n' +
-                            '    </div>');
-                        next();
-                    },
-                    error: function (data) {
-                        $('#uplog').html('嗷呜o(╥﹏╥)o 获取系统更新日志失败啦');
-                        next();
-                    }
-                });
-                //假设总页数为 6
-            }
-        });
+        // flow.load({
+        //     elem: '#uplog'
+        //     , scrollElem: '#uplog'
+        //     , done: function (page, next) {
+        //         var lis = [];
+        //         $.ajax({
+        //             url: '../ajax.php?mod=getuplog',
+        //             type: 'POST',
+        //             dataType: 'html',
+        //             data: '',
+        //             success: function (data) {
+        //                 $('#uplog').html('<div style="width: 100%;height: 800px;">\n' +
+        //                     '      <textarea class="layui-textarea" style="width: 100%;height: 800px;">' + data + '</textarea>\n' +
+        //                     '    </div>');
+        //                 next();
+        //             },
+        //             error: function (data) {
+        //                 $('#uplog').html('嗷呜o(╥﹏╥)o 获取系统更新日志失败啦');
+        //                 next();
+        //             }
+        //         });
+        //         //假设总页数为 6
+        //     }
+        // });
 
 
     });
