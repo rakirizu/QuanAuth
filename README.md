@@ -14,7 +14,7 @@
 
 2.修改配置文件 “function/config.inc.php” 文件中的信息为您的数据库信息
 
-3.通过执行以下代码新增管理员（请自行将各项参数替换）： 
+3.通过执行以下SQL语句新增管理员（请自行将各项参数替换）： 
 ```sql
 INSERT INTO sq_admin (ID, username, password, loginip, logintime, qq, lastaccesstime, accesstoken) VALUES (NULL, '您的用户名', MD5('您的密码'), '', unix_timestamp(now()) , '您的QQ', unix_timestamp(now()), '这里写64位随机字符');
 ```
