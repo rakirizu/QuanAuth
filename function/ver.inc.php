@@ -6,4 +6,4 @@
  * Time: 0:58
  */
 
-$G['siteinfo']['ver'] = '12.12';
+$G['siteinfo']['ver'] = '12.15';
